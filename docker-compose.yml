@@ -1,0 +1,50 @@
+services:
+  fordlogger:
+    build: .
+    volumes:
+      - ./config.json:/app/config.json
+      - ./tokens.json:/app/tokens.json
+    environment:
+      - FORDLOGGER_STORE_RAW_JSON=${FORDLOGGER_STORE_RAW_JSON:-true}
+      - FORDLOGGER_GEOCODING=${FORDLOGGER_GEOCODING:-true}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: fordlogger
+      POSTGRES_USER: fordlogger
+      POSTGRES_PASSWORD: fordlogger
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fordlogger"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - db
+    environment:
+      GF_INSTALL_PLUGINS: pr0ps-trackmap-panel
+      GF_SECURITY_ADMIN_PASSWORD: fordlogger
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  grafana-data:

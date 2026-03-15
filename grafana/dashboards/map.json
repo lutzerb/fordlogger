@@ -1,0 +1,326 @@
+{
+  "uid": "fordlogger-map",
+  "title": "Map",
+  "description": "FordLogger trip map with trip selector",
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 39,
+  "fiscalYearStartMonth": 0,
+  "liveNow": false,
+  "refresh": "",
+  "tags": ["fordlogger"],
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "templating": {
+    "list": [
+      {
+        "name": "trip",
+        "label": "Trip",
+        "type": "query",
+        "datasource": { "type": "postgres", "uid": "FordLogger" },
+        "query": "SELECT 0 AS __value, 'All trips' AS __text UNION ALL SELECT id AS __value, to_char(start_ts AT TIME ZONE 'Europe/Vienna', 'YYYY-MM-DD HH24:MI') || ' — ' || COALESCE(start_address, '') || ' → ' || COALESCE(end_address, '') || ' (' || COALESCE(distance_km::text, '?') || ' km)' AS __text FROM trips WHERE $__timeFilter(start_ts) ORDER BY __value DESC",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {
+          "text": "All trips",
+          "value": "0"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 10,
+      "title": "Distance",
+      "type": "stat",
+      "gridPos": { "h": 3, "w": 6, "x": 0, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "targets": [{
+        "refId": "A",
+        "datasource": { "type": "postgres", "uid": "FordLogger" },
+        "rawSql": "SELECT CASE WHEN $trip = 0 THEN SUM(distance_km) ELSE MAX(distance_km) END AS val FROM trips WHERE $__timeFilter(start_ts) AND ($trip = 0 OR id = $trip)",
+        "format": "table"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "km",
+          "decimals": 1,
+          "color": { "fixedColor": "blue", "mode": "fixed" }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+    },
+    {
+      "id": 11,
+      "title": "Duration",
+      "type": "stat",
+      "gridPos": { "h": 3, "w": 6, "x": 6, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "targets": [{
+        "refId": "A",
+        "datasource": { "type": "postgres", "uid": "FordLogger" },
+        "rawSql": "SELECT CASE WHEN $trip = 0 THEN SUM(duration_s) ELSE MAX(duration_s) END AS val FROM trips WHERE $__timeFilter(start_ts) AND ($trip = 0 OR id = $trip)",
+        "format": "table"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": { "fixedColor": "blue", "mode": "fixed" }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+    },
+    {
+      "id": 12,
+      "title": "Consumption",
+      "type": "stat",
+      "gridPos": { "h": 3, "w": 6, "x": 12, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "targets": [{
+        "refId": "A",
+        "datasource": { "type": "postgres", "uid": "FordLogger" },
+        "rawSql": "SELECT ROUND(AVG(consumption_kwh_per_100km)::numeric, 1) AS val FROM trips WHERE $__timeFilter(start_ts) AND ($trip = 0 OR id = $trip) AND consumption_kwh_per_100km > 0",
+        "format": "table"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "kWh/100km",
+          "decimals": 1,
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 18 },
+              { "color": "red", "value": 25 }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+    },
+    {
+      "id": 13,
+      "title": "Avg Speed",
+      "type": "stat",
+      "gridPos": { "h": 3, "w": 6, "x": 18, "y": 0 },
+      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "targets": [{
+        "refId": "A",
+        "datasource": { "type": "postgres", "uid": "FordLogger" },
+        "rawSql": "SELECT ROUND(AVG(avg_speed_kmh)::numeric, 1) AS val FROM trips WHERE $__timeFilter(start_ts) AND ($trip = 0 OR id = $trip) AND avg_speed_kmh > 0",
+        "format": "table"
+      }],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "km/h",
+          "decimals": 1,
+          "color": { "fixedColor": "blue", "mode": "fixed" }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+    },
+    {
+      "id": 1,
+      "title": "Map",
+      "type": "geomap",
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 22,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "targets": [
+        {
+          "refId": "routes",
+          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "rawSql": "SELECT p.ts AS time, p.lat, p.lon, p.speed_kmh, t.id AS trip_id, t.distance_km FROM positions p JOIN trips t ON p.vin = t.vin AND p.ts BETWEEN t.start_ts AND t.end_ts WHERE $__timeFilter(p.ts) AND p.lat IS NOT NULL AND p.lon IS NOT NULL AND ($trip = 0 OR t.id = $trip) ORDER BY t.id, p.ts",
+          "format": "table",
+          "editorMode": "code"
+        },
+        {
+          "refId": "starts",
+          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "rawSql": "SELECT start_ts AS time, start_lat AS lat, start_lon AS lon, COALESCE(start_address, '') AS \"Address\", ROUND(distance_km::numeric, 1) AS \"Distance\", ROUND(consumption_kwh_per_100km::numeric, 1) AS \"kWh/100km\", ROUND(avg_speed_kmh::numeric, 0) AS \"Avg Speed\", id AS trip_id FROM trips WHERE $__timeFilter(start_ts) AND start_lat IS NOT NULL AND ($trip = 0 OR id = $trip) ORDER BY start_ts",
+          "format": "table",
+          "editorMode": "code"
+        },
+        {
+          "refId": "ends",
+          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "rawSql": "SELECT end_ts AS time, end_lat AS lat, end_lon AS lon, COALESCE(end_address, '') AS \"Address\", ROUND(distance_km::numeric, 1) AS \"Distance\", ROUND(consumption_kwh_per_100km::numeric, 1) AS \"kWh/100km\", ROUND(avg_speed_kmh::numeric, 0) AS \"Avg Speed\", id AS trip_id FROM trips WHERE $__timeFilter(start_ts) AND end_lat IS NOT NULL AND ($trip = 0 OR id = $trip) ORDER BY start_ts",
+          "format": "table",
+          "editorMode": "code"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "trip_id" },
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "continuous-BlYlRd" }
+              }
+            ]
+          },
+          {
+            "matcher": { "id": "byName", "options": "speed_kmh" },
+            "properties": [
+              {
+                "id": "color",
+                "value": { "mode": "continuous-BlYlRd" }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "view": {
+          "id": "coords",
+          "lat": 48.2,
+          "lon": 16.37,
+          "zoom": 10
+        },
+        "basemap": {
+          "config": {
+            "server": "light"
+          },
+          "name": "CartoDB Positron",
+          "type": "xyz",
+          "url": "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+        },
+        "controls": {
+          "showZoom": true,
+          "mouseWheelZoom": true,
+          "showAttribution": true,
+          "showScale": true
+        },
+        "tooltip": {
+          "mode": "details"
+        },
+        "layers": [
+          {
+            "type": "route",
+            "name": "Trip routes",
+            "config": {
+              "showLegend": false,
+              "style": {
+                "color": {
+                  "field": "trip_id",
+                  "fixed": "#3274D9"
+                },
+                "lineWidth": 4,
+                "opacity": 0.8
+              }
+            },
+            "location": {
+              "mode": "coords",
+              "latitude": "lat",
+              "longitude": "lon"
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "routes"
+            },
+            "tooltip": true
+          },
+          {
+            "type": "markers",
+            "name": "Start",
+            "config": {
+              "showLegend": false,
+              "style": {
+                "size": {
+                  "fixed": 14
+                },
+                "color": {
+                  "fixed": "#37872D"
+                },
+                "opacity": 1,
+                "symbol": {
+                  "mode": "fixed",
+                  "fixed": "img/icons/marker/triangle.svg"
+                },
+                "textConfig": {
+                  "fontSize": 0
+                }
+              }
+            },
+            "location": {
+              "mode": "coords",
+              "latitude": "lat",
+              "longitude": "lon"
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "starts"
+            },
+            "tooltip": true
+          },
+          {
+            "type": "markers",
+            "name": "End",
+            "config": {
+              "showLegend": false,
+              "style": {
+                "size": {
+                  "fixed": 14
+                },
+                "color": {
+                  "fixed": "#C4162A"
+                },
+                "opacity": 1,
+                "symbol": {
+                  "mode": "fixed",
+                  "fixed": "img/icons/marker/square.svg"
+                },
+                "textConfig": {
+                  "fontSize": 0
+                }
+              }
+            },
+            "location": {
+              "mode": "coords",
+              "latitude": "lat",
+              "longitude": "lon"
+            },
+            "filterData": {
+              "id": "byRefId",
+              "options": "ends"
+            },
+            "tooltip": true
+          }
+        ]
+      }
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "links": []
+}

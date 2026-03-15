@@ -1,0 +1,14 @@
+{
+  "client_id": "YOUR_CLIENT_ID",
+  "client_secret": "YOUR_CLIENT_SECRET",
+  "redirect_uri": "http://localhost:8080/callback",
+  "poll_interval_minutes": 15,
+  "auth_url": "https://api.vehicle.ford.com/fcon-public/v1/auth/init",
+  "token_url": "https://api.vehicle.ford.com/dah2vb2cprod.onmicrosoft.com/oauth2/v2.0/token?p=B2C_1A_FCON_AUTHORIZE",
+  "api_base": "https://api.vehicle.ford.com/fcon-query/v1",
+  "db_host": "db",
+  "db_port": 5432,
+  "db_name": "fordlogger",
+  "db_user": "fordlogger",
+  "db_password": "fordlogger"
+}

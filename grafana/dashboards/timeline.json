@@ -1,0 +1,355 @@
+{
+  "uid": "fordlogger-timeline",
+  "title": "Timeline",
+  "description": "FordLogger vehicle state history timeline",
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 39,
+  "fiscalYearStartMonth": 0,
+  "liveNow": false,
+  "refresh": "",
+  "tags": ["fordlogger"],
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Vehicle State",
+      "type": "state-timeline",
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT ts as time, state as \"State\" FROM states WHERE $__timeFilter(ts) ORDER BY ts",
+          "format": "table",
+          "editorMode": "code"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "lineWidth": 0,
+            "fillOpacity": 80
+          },
+          "color": {
+            "mode": "fixed"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "driving": {
+                  "color": "#73BF69",
+                  "index": 0,
+                  "text": "driving"
+                },
+                "charging": {
+                  "color": "#5794F2",
+                  "index": 1,
+                  "text": "charging"
+                },
+                "parked": {
+                  "color": "#FADE2A",
+                  "index": 2,
+                  "text": "parked"
+                },
+                "sleeping": {
+                  "color": "#8F8F8F",
+                  "index": 3,
+                  "text": "sleeping"
+                }
+              }
+            }
+          ]
+        },
+        "overrides": []
+      },
+      "options": {
+        "showValue": "auto",
+        "rowHeight": 0.9,
+        "mergeValues": true,
+        "alignValue": "left",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "SoC %",
+      "type": "timeseries",
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT ts as time, soc_pct as \"SoC %\" FROM positions WHERE $__timeFilter(ts) AND soc_pct IS NOT NULL ORDER BY ts",
+          "format": "table",
+          "editorMode": "code"
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT ts as time, state as \"State\" FROM states WHERE $__timeFilter(ts) ORDER BY ts",
+          "format": "table",
+          "editorMode": "code",
+          "hide": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "spanNulls": true,
+            "showPoints": "auto",
+            "pointSize": 5,
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 20
+              },
+              {
+                "color": "green",
+                "value": 50
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "State"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 15
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 0
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "driving": {
+                        "color": "#73BF69",
+                        "index": 0
+                      },
+                      "charging": {
+                        "color": "#5794F2",
+                        "index": 1
+                      },
+                      "parked": {
+                        "color": "#FADE2A",
+                        "index": 2
+                      },
+                      "sleeping": {
+                        "color": "#8F8F8F",
+                        "index": 3
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "transparent"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["lastNotNull"]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Speed km/h",
+      "type": "timeseries",
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT ts as time, speed_kmh as \"Speed km/h\" FROM positions WHERE $__timeFilter(ts) AND speed_kmh IS NOT NULL ORDER BY ts",
+          "format": "table",
+          "editorMode": "code"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 15,
+            "gradientMode": "scheme",
+            "spanNulls": true,
+            "showPoints": "auto",
+            "pointSize": 5,
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            }
+          },
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "unit": "velocitykmh",
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 130
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["max", "mean"]
+        }
+      }
+    }
+  ],
+  "templating": {
+    "list": []
+  },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "links": []
+}
