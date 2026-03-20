@@ -14,6 +14,6 @@ Collecting data first — these are planned for later.
 
 ## Larger features
 - **Scheduled preconditioning** — If Ford API supports write operations (start/stop climate)
-- **Multi-vehicle support** — Schema supports it, poller needs parallel state machines
+- ~~**Multi-vehicle support**~~ — **Done!** Grafana dashboards have a Vehicle dropdown; poller already handles multiple VINs
 - **Companion web UI** — Flask/FastAPI for config, token status, manual actions
 - **Fleet comparison** — Central server that aggregates anonymized stats (avg consumption, degradation, charge speeds) from opt-in FordLogger instances. Each instance sends periodic summaries (no VIN, no GPS — just model/year, monthly consumption, battery capacity trend, charge speeds, rough region). Dashboard panels show "your car vs fleet" percentiles. Needs critical mass of users to be useful.
