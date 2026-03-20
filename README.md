@@ -51,6 +51,10 @@ Before you can use FordLogger, you need API credentials from Ford's developer po
 
 Go to [https://developer.ford.com/developer-eu](https://developer.ford.com/developer-eu) and create an account. **You must use the same email address that you use in the FordPass app** — Ford links API access to your FordPass account.
 
+> **Tips from the community:**
+> - **Fill out every field** in the registration form completely — leaving any field blank can cause errors during signup.
+> - **Use only standard English characters** (a–z, 0–9) throughout — special characters from non-English alphabets (umlauts, accents, etc.) can cause silent failures.
+
 ### 2. Create an application
 
 1. Log in to the developer portal and create a new application
@@ -274,9 +278,6 @@ Re-run the auth flow: `docker compose run -p 8080:8080 fordlogger python -m ford
 
 **Database connection lost**
 FordLogger automatically reconnects to PostgreSQL if the connection drops. Check `docker compose logs fordlogger` for reconnection messages.
-
-**Non-ASCII characters or incomplete fields in Ford developer portal**
-When registering on the Ford developer portal: (1) use only standard English characters (a–z, 0–9) — special characters from non-English alphabets (umlauts, accents, etc.) can cause silent failures; and (2) fill out every field in the registration form completely — leaving optional-looking fields blank has been reported to cause errors during account or app creation.
 
 **Some trip fields are empty (consumption, avg speed, outside temp)**
 These values are calculated from metrics that not all Ford vehicles report. To check what your vehicle actually sends, use the diagnostic script:
