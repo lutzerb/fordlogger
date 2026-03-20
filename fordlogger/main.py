@@ -18,11 +18,11 @@ log = logging.getLogger("fordlogger")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="FordLogger – Ford Fahrzeugdaten Logger")
-    parser.add_argument("--auth", action="store_true", help="OAuth-Login durchfuehren")
-    parser.add_argument("--once", action="store_true", help="Einmal abfragen und beenden")
-    parser.add_argument("--backfill-addresses", action="store_true", help="Adressen fuer bestehende Trips/Ladesitzungen nachtraeglich geocoden")
-    parser.add_argument("--config", default="config.json", help="Pfad zur config.json")
+    parser = argparse.ArgumentParser(description="FordLogger – Ford vehicle data logger")
+    parser.add_argument("--auth", action="store_true", help="Run OAuth login flow")
+    parser.add_argument("--once", action="store_true", help="Poll once and exit")
+    parser.add_argument("--backfill-addresses", action="store_true", help="Reverse-geocode addresses for existing trips and charge sessions")
+    parser.add_argument("--config", default="config.json", help="Path to config.json")
     args = parser.parse_args()
 
     try:

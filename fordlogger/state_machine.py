@@ -56,7 +56,7 @@ class StateMachine:
 
         changed = new != old
         if changed:
-            log.info("Zustandswechsel %s: %s -> %s", self.vin, old.value, new.value)
+            log.info("State change %s: %s -> %s", self.vin, old.value, new.value)
             self.last_change_ts = now
             self._last_significant_change = now
 

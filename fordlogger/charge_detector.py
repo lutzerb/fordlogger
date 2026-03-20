@@ -12,7 +12,7 @@ def finalize_charge_session(conn, vin: str, charge_start_ts, charge_end_ts, geoc
     charge_positions = [p for p in positions if p["ts"] <= charge_end_ts]
 
     if len(charge_positions) < 2:
-        log.warning("Zu wenige Positionen fuer Ladesitzung: %d", len(charge_positions))
+        log.warning("Too few positions for charge session: %d", len(charge_positions))
         return None
 
     first = charge_positions[0]
@@ -20,7 +20,7 @@ def finalize_charge_session(conn, vin: str, charge_start_ts, charge_end_ts, geoc
 
     duration_s = int((last["ts"] - first["ts"]).total_seconds())
     if duration_s < 60:
-        log.debug("Ladesitzung zu kurz (%ds), uebersprungen", duration_s)
+        log.debug("Charge session too short (%ds), skipping", duration_s)
         return None
 
     start_soc = first.get("soc_pct")
@@ -53,7 +53,7 @@ def finalize_charge_session(conn, vin: str, charge_start_ts, charge_end_ts, geoc
         try:
             address = reverse_geocode(first.get("lat"), first.get("lon"))
         except Exception as e:
-            log.warning("Geocoding fuer Ladesitzung fehlgeschlagen: %s", e)
+            log.warning("Geocoding failed for charge session: %s", e)
 
     cs = ChargeSession(
         vin=vin,
@@ -77,7 +77,7 @@ def finalize_charge_session(conn, vin: str, charge_start_ts, charge_end_ts, geoc
 
     cs_id = db.insert_charge_session(conn, cs)
     log.info(
-        "Ladesitzung gespeichert #%d: %.1f%% -> %.1f%% (+%.1f kWh), %dmin, max %.1f kW",
+        "Charge session saved #%d: %.1f%% -> %.1f%% (+%.1f kWh), %dmin, max %.1f kW",
         cs_id,
         start_soc or 0,
         end_soc or 0,

@@ -24,7 +24,7 @@ class _CallbackHandler(BaseHTTPRequestHandler):
         else:
             self.send_response(400)
             self.end_headers()
-            self.wfile.write(f"Fehler: {self.path}".encode())
+            self.wfile.write(f"Error: {self.path}".encode())
 
     def log_message(self, *a):
         pass
@@ -63,7 +63,7 @@ def do_auth_flow(cfg: dict):
     _CallbackHandler.auth_code = None
     server = HTTPServer(("localhost", 8080), _CallbackHandler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    log.info("Warte auf Callback (max. 120s) ...")
+    log.info("Waiting for OAuth callback (max. 120s) ...")
 
     for _ in range(240):
         if _CallbackHandler.auth_code:
@@ -71,11 +71,11 @@ def do_auth_flow(cfg: dict):
         time.sleep(0.5)
     else:
         server.shutdown()
-        raise TimeoutError("Kein Auth-Code erhalten")
+        raise TimeoutError("No auth code received within 120s")
 
     server.shutdown()
     code = _CallbackHandler.auth_code
-    log.info("Auth-Code erhalten: %s...", code[:10])
+    log.info("Auth code received: %s...", code[:10])
 
     scope = f"{cfg['client_id']} offline_access openid"
     resp = requests.post(cfg["token_url"], data={
@@ -90,7 +90,7 @@ def do_auth_flow(cfg: dict):
     tokens = resp.json()
     tokens["obtained_at"] = time.time()
     save_tokens(cfg, tokens)
-    log.info("Tokens gespeichert in %s", _token_path(cfg))
+    log.info("Tokens saved to %s", _token_path(cfg))
 
 
 def refresh_access_token(cfg: dict, tokens: dict) -> dict:

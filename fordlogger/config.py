@@ -33,7 +33,7 @@ INTERVALS = {
 def load_config(path: str = "config.json") -> dict:
     p = Path(path)
     if not p.exists():
-        raise FileNotFoundError(f"Config-Datei nicht gefunden: {p}")
+        raise FileNotFoundError(f"Config file not found: {p}")
     cfg = {**DEFAULT_CONFIG, **json.loads(p.read_text())}
     # Allow env var overrides for Docker vs local dev
     if os.environ.get("FORDLOGGER_DB_HOST"):
@@ -43,5 +43,5 @@ def load_config(path: str = "config.json") -> dict:
     cfg["store_raw_json"] = os.environ.get("FORDLOGGER_STORE_RAW_JSON", "true").lower() in ("true", "1", "yes")
     cfg["geocoding"] = os.environ.get("FORDLOGGER_GEOCODING", "true").lower() in ("true", "1", "yes")
     if not cfg["client_id"] or not cfg["client_secret"]:
-        raise ValueError("client_id und client_secret muessen in config.json gesetzt sein")
+        raise ValueError("client_id and client_secret must be set in config.json")
     return cfg

@@ -28,7 +28,7 @@ def ensure_schema(conn):
     schema_sql = SCHEMA_FILE.read_text()
     with conn.cursor() as cur:
         cur.execute(schema_sql)
-    log.info("Datenbankschema angelegt/geprueft")
+    log.info("Database schema created/verified")
 
 
 def upsert_vehicle(conn, v: Vehicle):

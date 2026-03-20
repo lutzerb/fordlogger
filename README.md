@@ -260,6 +260,12 @@ Uses Ford's FordConnect Query API (`fcon-query/v1`), the same API used by [evcc]
 **429 Too Many Requests**
 Ford's API allows ~1 request per minute. FordLogger retries automatically with backoff (30s, 60s, 120s). If you see persistent 429 errors after a fresh start, wait a few minutes — it resolves itself.
 
+**OAuth callback timeout ("No auth code received within 120s")**
+The auth flow opens a local HTTP server on port 8080 and waits for Ford to redirect your browser back to it. This times out if:
+- Your browser is on a different machine than where Docker is running — use an SSH tunnel: `ssh -L 8080:localhost:8080 your-server`, then open the auth URL in your local browser
+- Port 8080 is already in use or blocked by a firewall — free the port or adjust your firewall rules
+- You took more than 120 seconds to log in and authorize in the browser — just re-run the auth command
+
 **Authentication fails immediately after creating API credentials**
 Ford's backend may need time to provision new app credentials. Wait 15-30 minutes and try again.
 

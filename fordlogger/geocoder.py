@@ -42,7 +42,7 @@ def reverse_geocode(lat: float, lon: float) -> str | None:
         r.raise_for_status()
         data = r.json()
     except Exception as e:
-        log.warning("Geocoding fehlgeschlagen fuer %.6f, %.6f: %s", lat, lon, e)
+        log.warning("Geocoding failed for %.6f, %.6f: %s", lat, lon, e)
         return None
 
     addr = data.get("address", {})
@@ -75,7 +75,7 @@ def backfill_addresses(conn):
         """)
         trips = cur.fetchall()
 
-    log.info("Backfill: %d Trips ohne Adresse gefunden", len(trips))
+    log.info("Backfill: %d trip(s) without address", len(trips))
     for trip_id, start_lat, start_lon, end_lat, end_lon in trips:
         start_addr = reverse_geocode(start_lat, start_lon) if start_lat else None
         end_addr = reverse_geocode(end_lat, end_lon) if end_lat else None
@@ -95,7 +95,7 @@ def backfill_addresses(conn):
         """)
         sessions = cur.fetchall()
 
-    log.info("Backfill: %d Ladesitzungen ohne Adresse gefunden", len(sessions))
+    log.info("Backfill: %d charge session(s) without address", len(sessions))
     for cs_id, lat, lon in sessions:
         addr = reverse_geocode(lat, lon)
         with conn.cursor() as cur:
@@ -103,6 +103,6 @@ def backfill_addresses(conn):
                 "UPDATE charge_sessions SET address = %s WHERE id = %s",
                 (addr, cs_id),
             )
-        log.info("  Ladesitzung #%d: %s", cs_id, addr)
+        log.info("  Charge session #%d: %s", cs_id, addr)
 
-    log.info("Backfill abgeschlossen")
+    log.info("Backfill complete")

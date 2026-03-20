@@ -12,7 +12,7 @@ def finalize_trip(conn, vin: str, drive_start_ts, drive_end_ts, geocoding: bool 
     drive_positions = [p for p in positions if p["ts"] <= drive_end_ts]
 
     if len(drive_positions) < 2:
-        log.warning("Zu wenige Positionen fuer Trip: %d", len(drive_positions))
+        log.warning("Too few positions for trip: %d", len(drive_positions))
         return None
 
     first = drive_positions[0]
@@ -20,7 +20,7 @@ def finalize_trip(conn, vin: str, drive_start_ts, drive_end_ts, geocoding: bool 
 
     duration_s = int((last["ts"] - first["ts"]).total_seconds())
     if duration_s < 60:
-        log.debug("Trip zu kurz (%ds), uebersprungen", duration_s)
+        log.debug("Trip too short (%ds), skipping", duration_s)
         return None
 
     start_odo = first.get("odometer_km")
@@ -60,7 +60,7 @@ def finalize_trip(conn, vin: str, drive_start_ts, drive_end_ts, geocoding: bool 
             start_addr = reverse_geocode(first.get("lat"), first.get("lon"))
             end_addr = reverse_geocode(last.get("lat"), last.get("lon"))
         except Exception as e:
-            log.warning("Geocoding fuer Trip fehlgeschlagen: %s", e)
+            log.warning("Geocoding failed for trip: %s", e)
 
     trip = Trip(
         vin=vin,
@@ -90,7 +90,7 @@ def finalize_trip(conn, vin: str, drive_start_ts, drive_end_ts, geocoding: bool 
 
     trip_id = db.insert_trip(conn, trip)
     log.info(
-        "Trip gespeichert #%d: %.1fkm, %dmin, %.1f kWh/100km",
+        "Trip saved #%d: %.1fkm, %dmin, %.1f kWh/100km",
         trip_id,
         distance or 0,
         duration_s // 60,

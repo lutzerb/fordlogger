@@ -33,7 +33,7 @@ class Poller:
             saved_state = db.get_latest_state(self.conn, vin)
             if saved_state and saved_state in VehicleState.__members__.values():
                 sm.state = VehicleState(saved_state)
-                log.info("Zustand fuer %s aus DB wiederhergestellt: %s", vin, saved_state)
+                log.info("Restored state for %s from DB: %s", vin, saved_state)
             self.machines[vin] = sm
         return self.machines[vin]
 
@@ -46,7 +46,7 @@ class Poller:
             return True
         except Exception:
             self._db_failures += 1
-            log.warning("DB-Verbindung verloren — versuche Reconnect (%d)", self._db_failures)
+            log.warning("DB connection lost — attempting reconnect (%d)", self._db_failures)
             try:
                 self.conn.close()
             except Exception:
@@ -54,11 +54,11 @@ class Poller:
             try:
                 self.conn = db.connect(self.cfg)
                 db.ensure_schema(self.conn)
-                log.info("DB-Reconnect erfolgreich")
+                log.info("DB reconnected successfully")
                 self._db_failures = 0
                 return True
             except Exception as e:
-                log.error("DB-Reconnect fehlgeschlagen: %s", e)
+                log.error("DB reconnect failed: %s", e)
                 return False
 
     def poll_once(self):
@@ -74,16 +74,16 @@ class Poller:
                 vehicles = self.api.get_garage()
                 for v in vehicles:
                     db.upsert_vehicle(self.conn, v)
-                log.info("Garage aktualisiert: %d Fahrzeuge", len(vehicles))
+                log.info("Garage updated: %d vehicle(s)", len(vehicles))
                 self._last_garage_update = now
             except Exception as e:
-                log.error("Garage-Fehler: %s", e)
+                log.error("Garage error: %s", e)
 
         # Telemetry
         try:
             positions = self.api.get_telemetry()
         except Exception as e:
-            log.error("Telemetrie-Fehler: %s", e, exc_info=True)
+            log.error("Telemetry error: %s", e, exc_info=True)
             return
 
         for pos in positions:
@@ -94,7 +94,7 @@ class Poller:
 
         # Skip if API data hasn't changed (Ford returns stale data when car is off)
         if vin in self._last_ts and pos.ts == self._last_ts[vin]:
-            log.debug("Ueberspringe %s – API-Daten unveraendert (updateTime=%s)", vin, pos.ts)
+            log.debug("Skipping %s — API data unchanged (updateTime=%s)", vin, pos.ts)
             return
         self._last_ts[vin] = pos.ts
 
@@ -129,7 +129,7 @@ class Poller:
                 finalize_trip(self.conn, vin, self._drive_start.pop(vin), ts,
                              geocoding=self.cfg.get("geocoding", True))
             except Exception as e:
-                log.error("Trip-Finalisierung fehlgeschlagen: %s", e, exc_info=True)
+                log.error("Trip finalization failed: %s", e, exc_info=True)
 
         # Track charge start/end
         if new == VehicleState.CHARGING:
@@ -139,7 +139,7 @@ class Poller:
                 finalize_charge_session(self.conn, vin, self._charge_start.pop(vin), ts,
                                        geocoding=self.cfg.get("geocoding", True))
             except Exception as e:
-                log.error("Ladesitzung-Finalisierung fehlgeschlagen: %s", e, exc_info=True)
+                log.error("Charge session finalization failed: %s", e, exc_info=True)
 
     def get_interval(self) -> int:
         """Return the shortest polling interval across all vehicles."""
