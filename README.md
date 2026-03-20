@@ -275,6 +275,22 @@ Re-run the auth flow: `docker compose run -p 8080:8080 fordlogger python -m ford
 **Database connection lost**
 FordLogger automatically reconnects to PostgreSQL if the connection drops. Check `docker compose logs fordlogger` for reconnection messages.
 
+**Non-ASCII characters in Ford developer portal**
+Use only standard English characters (a–z, 0–9) in your name, company name, and app description when registering on the Ford developer portal. Special characters from non-English alphabets (umlauts, accents, etc.) can cause silent failures during account or app creation.
+
+**Some trip fields are empty (consumption, avg speed, outside temp)**
+These values are calculated from metrics that not all Ford vehicles report. To check what your vehicle actually sends, use the diagnostic script:
+
+```bash
+# From the fordlogger directory (with venv active):
+python scripts/dump_telemetry.py --pretty | less
+
+# Or using Docker (no venv needed):
+docker compose run fordlogger python scripts/dump_telemetry.py --pretty
+```
+
+This dumps the full raw API response. Look for `xevBatteryCapacity`, `xevBatteryEnergyRemaining`, `speed`, and `ambientTemp` in the `metrics` array — if they're absent or always `null`, your vehicle doesn't report those values and the corresponding dashboard panels will show no data.
+
 ## Roadmap
 
 - **Support for more vehicles** — ICE cars (petrol/diesel), other Ford EV models. ICE support would need adapted dashboards (no charging/battery views) and possibly different telemetry fields.
