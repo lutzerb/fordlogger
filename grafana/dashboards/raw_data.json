@@ -6,7 +6,9 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "schemaVersion": 39,
-  "tags": ["fordlogger"],
+  "tags": [
+    "fordlogger"
+  ],
   "time": {
     "from": "now-24h",
     "to": "now"
@@ -19,61 +21,145 @@
       "id": 1,
       "title": "Positions (Telemetry Snapshots)",
       "type": "table",
-      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "lat" },
-            "properties": [{ "id": "decimals", "value": 6 }]
+            "matcher": {
+              "id": "byName",
+              "options": "lat"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 6
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "lon" },
-            "properties": [{ "id": "decimals", "value": 6 }]
+            "matcher": {
+              "id": "byName",
+              "options": "lon"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 6
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "soc_pct" },
-            "properties": [{ "id": "unit", "value": "percent" }]
+            "matcher": {
+              "id": "byName",
+              "options": "soc_pct"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "range_km" },
-            "properties": [{ "id": "unit", "value": "km" }]
+            "matcher": {
+              "id": "byName",
+              "options": "range_km"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "speed_kmh" },
-            "properties": [{ "id": "unit", "value": "km/h" }]
+            "matcher": {
+              "id": "byName",
+              "options": "speed_kmh"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "km/h"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "bat_temp_c" },
-            "properties": [{ "id": "unit", "value": "celsius" }]
+            "matcher": {
+              "id": "byName",
+              "options": "bat_temp_c"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "outside_temp_c" },
-            "properties": [{ "id": "unit", "value": "celsius" }]
+            "matcher": {
+              "id": "byName",
+              "options": "outside_temp_c"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "charge_power_kw" },
-            "properties": [{ "id": "unit", "value": "kwatt" }]
+            "matcher": {
+              "id": "byName",
+              "options": "charge_power_kw"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "kwatt"
+              }
+            ]
           }
         ]
       },
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false },
-        "sortBy": [{ "displayName": "ts", "desc": true }]
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "ts",
+            "desc": true
+          }
+        ]
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT ts, soc_pct, range_km, odometer_km, speed_kmh, lat, lon, heading, bat_temp_c, outside_temp_c, bat_voltage, bat_current_a, energy_remaining_kwh, bat_capacity_kwh, plug_status, charge_status, charge_power_kw, charger_voltage, charger_current_a, tire_pressure_fl, tire_pressure_fr, tire_pressure_rl, tire_pressure_rr, door_lock_status, ignition_status, state, raw_json::text as raw_api_response FROM positions WHERE $__timeFilter(ts) ORDER BY ts DESC LIMIT 500",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT ts, soc_pct, range_km, odometer_km, speed_kmh, lat, lon, heading, bat_temp_c, outside_temp_c, bat_voltage, bat_current_a, energy_remaining_kwh, bat_capacity_kwh, plug_status, charge_status, charge_power_kw, charger_voltage, charger_current_a, tire_pressure_fl, tire_pressure_fr, tire_pressure_rl, tire_pressure_rr, door_lock_status, ignition_status, state, raw_json::text as raw_api_response FROM positions WHERE vin = '$vin' AND  $__timeFilter(ts) ORDER BY ts DESC LIMIT 500",
           "format": "table",
           "refId": "A"
         }
@@ -83,65 +169,177 @@
       "id": 2,
       "title": "Trips",
       "type": "table",
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 12 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "distance_km" },
-            "properties": [{ "id": "decimals", "value": 1 }, { "id": "unit", "value": "km" }]
+            "matcher": {
+              "id": "byName",
+              "options": "distance_km"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "km"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "consumption" },
-            "properties": [{ "id": "decimals", "value": 1 }, { "id": "unit", "value": "kWh/100km" }]
+            "matcher": {
+              "id": "byName",
+              "options": "consumption"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "kWh/100km"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "duration" },
-            "properties": [{ "id": "unit", "value": "s" }]
+            "matcher": {
+              "id": "byName",
+              "options": "duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "avg_speed_kmh" },
-            "properties": [{ "id": "decimals", "value": 1 }, { "id": "unit", "value": "km/h" }]
+            "matcher": {
+              "id": "byName",
+              "options": "avg_speed_kmh"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "km/h"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "max_speed_kmh" },
-            "properties": [{ "id": "decimals", "value": 1 }, { "id": "unit", "value": "km/h" }]
+            "matcher": {
+              "id": "byName",
+              "options": "max_speed_kmh"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "km/h"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "start_soc" },
-            "properties": [{ "id": "unit", "value": "percent" }]
+            "matcher": {
+              "id": "byName",
+              "options": "start_soc"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "end_soc" },
-            "properties": [{ "id": "unit", "value": "percent" }]
+            "matcher": {
+              "id": "byName",
+              "options": "end_soc"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "energy_used_kwh" },
-            "properties": [{ "id": "decimals", "value": 2 }, { "id": "unit", "value": "kwatth" }]
+            "matcher": {
+              "id": "byName",
+              "options": "energy_used_kwh"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "kwatth"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "temp" },
-            "properties": [{ "id": "unit", "value": "celsius" }]
+            "matcher": {
+              "id": "byName",
+              "options": "temp"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
           }
         ]
       },
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false },
-        "sortBy": [{ "displayName": "start", "desc": true }]
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "start",
+            "desc": true
+          }
+        ]
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT start_ts AS \"start\", end_ts AS \"end\", duration_s AS \"duration\", distance_km, start_soc_pct AS \"start_soc\", end_soc_pct AS \"end_soc\", soc_used_pct AS \"soc_used\", energy_used_kwh, consumption_kwh_per_100km AS \"consumption\", avg_speed_kmh, max_speed_kmh, outside_temp_c AS \"temp\", start_address, end_address, start_lat, start_lon, end_lat, end_lon FROM trips WHERE $__timeFilter(start_ts) ORDER BY start_ts DESC LIMIT 200",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT start_ts AS \"start\", end_ts AS \"end\", duration_s AS \"duration\", distance_km, start_soc_pct AS \"start_soc\", end_soc_pct AS \"end_soc\", soc_used_pct AS \"soc_used\", energy_used_kwh, consumption_kwh_per_100km AS \"consumption\", avg_speed_kmh, max_speed_kmh, outside_temp_c AS \"temp\", start_address, end_address, start_lat, start_lon, end_lat, end_lon FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) ORDER BY start_ts DESC LIMIT 200",
           "format": "table",
           "refId": "A"
         }
@@ -151,57 +349,145 @@
       "id": 3,
       "title": "Charge Sessions",
       "type": "table",
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 22 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "start_soc" },
-            "properties": [{ "id": "unit", "value": "percent" }]
+            "matcher": {
+              "id": "byName",
+              "options": "start_soc"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "end_soc" },
-            "properties": [{ "id": "unit", "value": "percent" }]
+            "matcher": {
+              "id": "byName",
+              "options": "end_soc"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "energy_added_kwh" },
-            "properties": [{ "id": "decimals", "value": 2 }, { "id": "unit", "value": "kwatth" }]
+            "matcher": {
+              "id": "byName",
+              "options": "energy_added_kwh"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "unit",
+                "value": "kwatth"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "max_power_kw" },
-            "properties": [{ "id": "decimals", "value": 1 }, { "id": "unit", "value": "kwatt" }]
+            "matcher": {
+              "id": "byName",
+              "options": "max_power_kw"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "kwatt"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "avg_power_kw" },
-            "properties": [{ "id": "decimals", "value": 1 }, { "id": "unit", "value": "kwatt" }]
+            "matcher": {
+              "id": "byName",
+              "options": "avg_power_kw"
+            },
+            "properties": [
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "kwatt"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "duration" },
-            "properties": [{ "id": "unit", "value": "s" }]
+            "matcher": {
+              "id": "byName",
+              "options": "duration"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              }
+            ]
           },
           {
-            "matcher": { "id": "byName", "options": "temp" },
-            "properties": [{ "id": "unit", "value": "celsius" }]
+            "matcher": {
+              "id": "byName",
+              "options": "temp"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "celsius"
+              }
+            ]
           }
         ]
       },
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false },
-        "sortBy": [{ "displayName": "start", "desc": true }]
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "start",
+            "desc": true
+          }
+        ]
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT start_ts AS \"start\", end_ts AS \"end\", duration_s AS \"duration\", start_soc_pct AS \"start_soc\", end_soc_pct AS \"end_soc\", soc_added_pct AS \"soc_added\", energy_added_kwh, max_power_kw, avg_power_kw, charge_type, outside_temp_c AS \"temp\", address, lat, lon FROM charge_sessions WHERE $__timeFilter(start_ts) ORDER BY start_ts DESC LIMIT 200",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT start_ts AS \"start\", end_ts AS \"end\", duration_s AS \"duration\", start_soc_pct AS \"start_soc\", end_soc_pct AS \"end_soc\", soc_added_pct AS \"soc_added\", energy_added_kwh, max_power_kw, avg_power_kw, charge_type, outside_temp_c AS \"temp\", address, lat, lon FROM charge_sessions WHERE vin = '$vin' AND  $__timeFilter(start_ts) ORDER BY start_ts DESC LIMIT 200",
           "format": "table",
           "refId": "A"
         }
@@ -211,13 +497,23 @@
       "id": 4,
       "title": "State Transitions",
       "type": "table",
-      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 32 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 32
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
@@ -226,13 +522,23 @@
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false },
-        "sortBy": [{ "displayName": "ts", "desc": true }]
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "ts",
+            "desc": true
+          }
+        ]
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT ts, prev_state, state, vin FROM states WHERE $__timeFilter(ts) ORDER BY ts DESC LIMIT 200",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT ts, prev_state, state, vin FROM states WHERE vin = '$vin' AND  $__timeFilter(ts) ORDER BY ts DESC LIMIT 200",
           "format": "table",
           "refId": "A"
         }
@@ -242,13 +548,23 @@
       "id": 5,
       "title": "Vehicles",
       "type": "table",
-      "gridPos": { "h": 4, "w": 24, "x": 0, "y": 40 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
@@ -257,16 +573,39 @@
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false }
+        "footer": {
+          "show": false
+        }
       },
       "targets": [
         {
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "rawSql": "SELECT vin, make, model, model_year, color, nickname, engine_type, first_seen, updated_at FROM vehicles ORDER BY first_seen DESC",
           "format": "table",
           "refId": "A"
         }
       ]
     }
-  ]
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "vin",
+        "label": "Vehicle",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
+        "query": "SELECT vin FROM vehicles ORDER BY vin",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {}
+      }
+    ]
+  }
 }

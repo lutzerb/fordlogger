@@ -6,7 +6,9 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "schemaVersion": 39,
-  "tags": ["fordlogger"],
+  "tags": [
+    "fordlogger"
+  ],
   "time": {
     "from": "now-24h",
     "to": "now"
@@ -19,8 +21,16 @@
       "id": 1,
       "title": "Current SoC",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 0, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percent",
@@ -29,13 +39,27 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "orange", "value": 20 },
-              { "color": "yellow", "value": 40 },
-              { "color": "green", "value": 60 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 20
+              },
+              {
+                "color": "yellow",
+                "value": 40
+              },
+              {
+                "color": "green",
+                "value": 60
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": []
         },
         "overrides": []
@@ -43,7 +67,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -56,9 +82,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", soc_pct FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", soc_pct FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -67,21 +96,43 @@
       "id": 2,
       "title": "Current Range",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 3, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 3,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "km",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "orange", "value": 50 },
-              { "color": "yellow", "value": 100 },
-              { "color": "green", "value": 200 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 50
+              },
+              {
+                "color": "yellow",
+                "value": 100
+              },
+              {
+                "color": "green",
+                "value": 200
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": []
         },
         "overrides": []
@@ -89,7 +140,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -102,9 +155,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", range_km FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", range_km FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -113,8 +169,16 @@
       "id": 3,
       "title": "Odometer",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 6, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 6,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "km",
@@ -122,10 +186,15 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null }
+              {
+                "color": "blue",
+                "value": null
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": []
         },
         "overrides": []
@@ -133,7 +202,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -146,9 +217,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", odometer_km FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", odometer_km FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -157,19 +231,44 @@
       "id": 4,
       "title": "Plug Status",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 9, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 9,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "text", "value": null }
+              {
+                "color": "text",
+                "value": null
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [
-            { "type": "value", "options": { "0": { "text": "Disconnected", "color": "text" }, "1": { "text": "Connected", "color": "green" } } }
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "Disconnected",
+                  "color": "text"
+                },
+                "1": {
+                  "text": "Connected",
+                  "color": "green"
+                }
+              }
+            }
           ]
         },
         "overrides": []
@@ -177,7 +276,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -190,9 +291,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", CASE WHEN plug_status IN ('CONNECTED','Connected') THEN 1 ELSE 0 END AS plug FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", CASE WHEN plug_status IN ('CONNECTED','Connected') THEN 1 ELSE 0 END AS plug FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -201,20 +305,52 @@
       "id": 5,
       "title": "Charge Status",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 12, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 12,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "text", "value": null },
-              { "color": "green", "value": 1 }
+              {
+                "color": "text",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [
-            { "type": "value", "options": { "0": { "text": "Not Charging", "color": "text" }, "1": { "text": "Charging", "color": "green" }, "2": { "text": "Complete", "color": "blue" } } }
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "Not Charging",
+                  "color": "text"
+                },
+                "1": {
+                  "text": "Charging",
+                  "color": "green"
+                },
+                "2": {
+                  "text": "Complete",
+                  "color": "blue"
+                }
+              }
+            }
           ]
         },
         "overrides": []
@@ -222,7 +358,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -235,9 +373,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", CASE WHEN charge_status IN ('IN_PROGRESS','ChargingAC','ChargingDC','CHARGING','Charging') THEN 1 WHEN charge_status IN ('COMPLETE','Complete') THEN 2 ELSE 0 END AS charge FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", CASE WHEN charge_status IN ('IN_PROGRESS','ChargingAC','ChargingDC','CHARGING','Charging') THEN 1 WHEN charge_status IN ('COMPLETE','Complete') THEN 2 ELSE 0 END AS charge FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -246,22 +387,64 @@
       "id": 6,
       "title": "Current State",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 15, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 15,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null },
-              { "color": "green", "value": 1 },
-              { "color": "orange", "value": 2 },
-              { "color": "purple", "value": 3 }
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              },
+              {
+                "color": "orange",
+                "value": 2
+              },
+              {
+                "color": "purple",
+                "value": 3
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [
-            { "type": "value", "options": { "0": { "text": "Parked", "color": "blue" }, "1": { "text": "Driving", "color": "green" }, "2": { "text": "Charging", "color": "orange" }, "3": { "text": "Sleeping", "color": "purple" } } }
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "Parked",
+                  "color": "blue"
+                },
+                "1": {
+                  "text": "Driving",
+                  "color": "green"
+                },
+                "2": {
+                  "text": "Charging",
+                  "color": "orange"
+                },
+                "3": {
+                  "text": "Sleeping",
+                  "color": "purple"
+                }
+              }
+            }
           ]
         },
         "overrides": []
@@ -269,7 +452,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -282,9 +467,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", CASE state WHEN 'driving' THEN 1 WHEN 'charging' THEN 2 WHEN 'sleeping' THEN 3 ELSE 0 END AS vehicle_state FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", CASE state WHEN 'driving' THEN 1 WHEN 'charging' THEN 2 WHEN 'sleeping' THEN 3 ELSE 0 END AS vehicle_state FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -293,21 +481,43 @@
       "id": 7,
       "title": "Battery Temp",
       "type": "stat",
-      "gridPos": { "h": 4, "w": 3, "x": 18, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "celsius",
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null },
-              { "color": "green", "value": 15 },
-              { "color": "yellow", "value": 35 },
-              { "color": "red", "value": 45 }
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 15
+              },
+              {
+                "color": "yellow",
+                "value": 35
+              },
+              {
+                "color": "red",
+                "value": 45
+              }
             ]
           },
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": []
         },
         "overrides": []
@@ -315,7 +525,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -328,9 +540,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", bat_temp_c FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", bat_temp_c FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -339,15 +554,31 @@
       "id": 12,
       "title": "Current Location",
       "type": "stat",
-      "gridPos": { "h": 3, "w": 24, "x": 0, "y": 4 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "displayName": "$current_location",
-          "color": { "fixedColor": "text", "mode": "fixed" },
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
           "thresholds": {
             "mode": "absolute",
-            "steps": [{ "color": "text", "value": null }]
+            "steps": [
+              {
+                "color": "text",
+                "value": null
+              }
+            ]
           }
         },
         "overrides": []
@@ -355,7 +586,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -368,9 +601,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT ts AS \"time\", 1 AS val FROM positions ORDER BY ts DESC LIMIT 1;",
+          "rawSql": "SELECT ts AS \"time\", 1 AS val FROM positions WHERE vin = '$vin'\nORDER BY ts DESC LIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -379,8 +615,16 @@
       "id": 8,
       "title": "SoC % over Time",
       "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 7 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "percent",
@@ -400,15 +644,28 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "scaleDistribution": { "type": "linear" },
-            "hideFrom": { "tooltip": false, "viz": false, "legend": false },
-            "thresholdsStyle": { "mode": "off" }
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
-          "color": { "mode": "palette-classic" },
+          "color": {
+            "mode": "palette-classic"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
           "mappings": []
@@ -416,15 +673,30 @@
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "showValues": "auto", "calcs": ["min", "max", "lastNotNull"] }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showValues": "auto",
+          "calcs": [
+            "min",
+            "max",
+            "lastNotNull"
+          ]
+        }
       },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "time_series",
-          "rawSql": "SELECT\n  ts AS \"time\",\n  soc_pct AS \"SoC %\"\nFROM positions\nWHERE $__timeFilter(ts)\nORDER BY ts;",
+          "rawSql": "SELECT\n  ts AS \"time\",\n  soc_pct AS \"SoC %\"\nFROM positions\nWHERE vin = '$vin' AND  $__timeFilter(ts)\nORDER BY ts;",
           "editorMode": "code"
         }
       ]
@@ -433,8 +705,16 @@
       "id": 9,
       "title": "Range km over Time",
       "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 7 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "km",
@@ -453,15 +733,28 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "scaleDistribution": { "type": "linear" },
-            "hideFrom": { "tooltip": false, "viz": false, "legend": false },
-            "thresholdsStyle": { "mode": "off" }
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
-          "color": { "mode": "palette-classic" },
+          "color": {
+            "mode": "palette-classic"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
           "mappings": []
@@ -469,15 +762,30 @@
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "showValues": "auto", "calcs": ["min", "max", "lastNotNull"] }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showValues": "auto",
+          "calcs": [
+            "min",
+            "max",
+            "lastNotNull"
+          ]
+        }
       },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "time_series",
-          "rawSql": "SELECT\n  ts AS \"time\",\n  range_km AS \"Range\"\nFROM positions\nWHERE $__timeFilter(ts)\nORDER BY ts;",
+          "rawSql": "SELECT\n  ts AS \"time\",\n  range_km AS \"Range\"\nFROM positions\nWHERE vin = '$vin' AND  $__timeFilter(ts)\nORDER BY ts;",
           "editorMode": "code"
         }
       ]
@@ -486,8 +794,16 @@
       "id": 10,
       "title": "Battery Temperature over Time",
       "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 15 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "celsius",
@@ -505,38 +821,75 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "scaleDistribution": { "type": "linear" },
-            "hideFrom": { "tooltip": false, "viz": false, "legend": false },
-            "thresholdsStyle": { "mode": "off" }
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
-          "color": { "mode": "palette-classic" },
+          "color": {
+            "mode": "palette-classic"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
           "mappings": []
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Outside" },
+            "matcher": {
+              "id": "byName",
+              "options": "Outside"
+            },
             "properties": [
-              { "id": "color", "value": { "mode": "fixed", "fixedColor": "orange" } }
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "orange"
+                }
+              }
             ]
           }
         ]
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "showValues": "auto", "calcs": ["min", "max", "lastNotNull"] }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showValues": "auto",
+          "calcs": [
+            "min",
+            "max",
+            "lastNotNull"
+          ]
+        }
       },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "time_series",
-          "rawSql": "SELECT\n  ts AS \"time\",\n  bat_temp_c AS \"Battery\",\n  outside_temp_c AS \"Outside\"\nFROM positions\nWHERE $__timeFilter(ts)\nORDER BY ts;",
+          "rawSql": "SELECT\n  ts AS \"time\",\n  bat_temp_c AS \"Battery\",\n  outside_temp_c AS \"Outside\"\nFROM positions\nWHERE vin = '$vin' AND  $__timeFilter(ts)\nORDER BY ts;",
           "editorMode": "code"
         }
       ]
@@ -545,18 +898,31 @@
       "id": 11,
       "title": "Latest Position",
       "type": "geomap",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 15 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
-          "color": { "mode": "thresholds" }
+          "color": {
+            "mode": "thresholds"
+          }
         },
         "overrides": []
       },
@@ -583,10 +949,28 @@
                   "fixed": "dark-green"
                 },
                 "opacity": 0.8,
-                "rotation": { "fixed": 0, "mode": "fixed", "max": 360, "min": -360 },
-                "size": { "fixed": 8, "min": 2, "max": 15 },
-                "symbol": { "fixed": "img/icons/marker/circle.svg", "mode": "fixed" },
-                "textConfig": { "fontSize": 12, "offsetX": 0, "offsetY": 0, "textAlign": "center", "textBaseline": "middle" }
+                "rotation": {
+                  "fixed": 0,
+                  "mode": "fixed",
+                  "max": 360,
+                  "min": -360
+                },
+                "size": {
+                  "fixed": 8,
+                  "min": 2,
+                  "max": 15
+                },
+                "symbol": {
+                  "fixed": "img/icons/marker/circle.svg",
+                  "mode": "fixed"
+                },
+                "textConfig": {
+                  "fontSize": 12,
+                  "offsetX": 0,
+                  "offsetY": 0,
+                  "textAlign": "center",
+                  "textBaseline": "middle"
+                }
               }
             },
             "location": {
@@ -612,9 +996,12 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
           "format": "table",
-          "rawSql": "SELECT\n  ts AS \"time\",\n  lat AS \"latitude\",\n  lon AS \"longitude\",\n  soc_pct AS \"SoC %\",\n  state AS \"State\"\nFROM positions\nWHERE lat IS NOT NULL AND lon IS NOT NULL\nORDER BY ts DESC\nLIMIT 1;",
+          "rawSql": "SELECT\n  ts AS \"time\",\n  lat AS \"latitude\",\n  lon AS \"longitude\",\n  soc_pct AS \"SoC %\",\n  state AS \"State\"\nFROM positions\nWHERE vin = '$vin' AND  lat IS NOT NULL AND lon IS NOT NULL\nORDER BY ts DESC\nLIMIT 1;",
           "editorMode": "code"
         }
       ]
@@ -623,16 +1010,35 @@
   "templating": {
     "list": [
       {
+        "name": "vin",
+        "label": "Vehicle",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
+        "query": "SELECT vin FROM vehicles ORDER BY vin",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {}
+      },
+      {
         "name": "current_location",
         "type": "query",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
         "query": "SELECT COALESCE(end_address, start_address, 'Unknown') FROM trips ORDER BY end_ts DESC LIMIT 1",
         "refresh": 2,
         "hide": 2
       }
     ]
   },
-  "annotations": { "list": [] },
+  "annotations": {
+    "list": []
+  },
   "links": [],
   "liveNow": false,
   "version": 1

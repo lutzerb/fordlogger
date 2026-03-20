@@ -5,7 +5,9 @@
   "editable": true,
   "graphTooltip": 1,
   "schemaVersion": 39,
-  "tags": ["fordlogger"],
+  "tags": [
+    "fordlogger"
+  ],
   "time": {
     "from": "now-90d",
     "to": "now"
@@ -17,114 +19,244 @@
       "id": 1,
       "title": "Avg Consumption",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT AVG(consumption_kwh_per_100km) AS \"avg\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT AVG(consumption_kwh_per_100km) AS \"avg\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "unit": "kWh/100km",
           "decimals": 1,
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 18 },
-              { "color": "red", "value": 25 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 18
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
             ]
           }
         },
         "overrides": []
       },
-      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
     },
     {
       "id": 2,
       "title": "Best Trip",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT MIN(consumption_kwh_per_100km) AS \"best\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km > 0",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT MIN(consumption_kwh_per_100km) AS \"best\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km > 0",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "unit": "kWh/100km",
           "decimals": 1,
-          "color": { "fixedColor": "green", "mode": "fixed" }
+          "color": {
+            "fixedColor": "green",
+            "mode": "fixed"
+          }
         },
         "overrides": []
       },
-      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
     },
     {
       "id": 3,
       "title": "Worst Trip",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT MAX(consumption_kwh_per_100km) AS \"worst\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km > 0",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT MAX(consumption_kwh_per_100km) AS \"worst\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km > 0",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "unit": "kWh/100km",
           "decimals": 1,
-          "color": { "fixedColor": "red", "mode": "fixed" }
+          "color": {
+            "fixedColor": "red",
+            "mode": "fixed"
+          }
         },
         "overrides": []
       },
-      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
     },
     {
       "id": 4,
       "title": "Total Trips",
       "type": "stat",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT COUNT(*) AS \"trips\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT COUNT(*) AS \"trips\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
-          "color": { "fixedColor": "blue", "mode": "fixed" }
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          }
         },
         "overrides": []
       },
-      "options": { "reduceOptions": { "values": false, "calcs": ["lastNotNull"], "fields": "" }, "colorMode": "value", "graphMode": "none", "textMode": "auto" }
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "auto"
+      }
     },
     {
       "id": 5,
       "title": "Consumption per Trip",
       "description": "kWh/100km per trip over time",
       "type": "timeseries",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 4 },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT start_ts AS \"time\", consumption_kwh_per_100km AS \"kWh/100km\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 ORDER BY start_ts",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT start_ts AS \"time\", consumption_kwh_per_100km AS \"kWh/100km\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 ORDER BY start_ts",
           "format": "time_series"
         },
         {
           "refId": "B",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT start_ts AS \"time\", AVG(consumption_kwh_per_100km) OVER (ORDER BY start_ts ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS \"Rolling avg\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 ORDER BY start_ts",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT start_ts AS \"time\", AVG(consumption_kwh_per_100km) OVER (ORDER BY start_ts ROWS BETWEEN 9 PRECEDING AND CURRENT ROW) AS \"Rolling avg\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 ORDER BY start_ts",
           "format": "time_series"
         }
       ],
@@ -140,24 +272,58 @@
             "fillOpacity": 0,
             "showPoints": "always"
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Rolling avg" },
+            "matcher": {
+              "id": "byName",
+              "options": "Rolling avg"
+            },
             "properties": [
-              { "id": "custom.drawStyle", "value": "line" },
-              { "id": "custom.pointSize", "value": 0 },
-              { "id": "custom.lineWidth", "value": 2 },
-              { "id": "custom.showPoints", "value": "never" },
-              { "id": "color", "value": { "fixedColor": "orange", "mode": "fixed" } }
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 0
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "never"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
             ]
           }
         ]
       },
       "options": {
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": ["mean", "min", "max"] },
-        "tooltip": { "mode": "multi", "sort": "none" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "min",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "none"
+        }
       }
     },
     {
@@ -165,19 +331,34 @@
       "title": "Consumption vs Temperature",
       "description": "Each dot is one trip. Cold weather increases consumption.",
       "type": "table",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 13 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT start_ts AS \"time\", COALESCE(start_address, '') || ' → ' || COALESCE(end_address, '') AS \"Route\", ROUND(outside_temp_c::numeric, 1) AS \"Temp °C\", ROUND(consumption_kwh_per_100km::numeric, 1) AS \"kWh/100km\", ROUND(distance_km::numeric, 1) AS \"Distance km\", ROUND(avg_speed_kmh::numeric, 1) AS \"Avg Speed\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 AND outside_temp_c IS NOT NULL ORDER BY outside_temp_c",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT start_ts AS \"time\", COALESCE(start_address, '') || ' → ' || COALESCE(end_address, '') AS \"Route\", ROUND(outside_temp_c::numeric, 1) AS \"Temp °C\", ROUND(consumption_kwh_per_100km::numeric, 1) AS \"kWh/100km\", ROUND(distance_km::numeric, 1) AS \"Distance km\", ROUND(avg_speed_kmh::numeric, 1) AS \"Avg Speed\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 AND outside_temp_c IS NOT NULL ORDER BY outside_temp_c",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
@@ -186,8 +367,15 @@
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false },
-        "sortBy": [{ "displayName": "Temp °C", "desc": false }]
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "Temp °C",
+            "desc": false
+          }
+        ]
       }
     },
     {
@@ -195,19 +383,34 @@
       "title": "Consumption vs Avg Speed",
       "description": "Each dot is one trip. Higher speeds increase consumption.",
       "type": "table",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 13 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT start_ts AS \"time\", COALESCE(start_address, '') || ' → ' || COALESCE(end_address, '') AS \"Route\", ROUND(avg_speed_kmh::numeric, 1) AS \"Avg Speed km/h\", ROUND(consumption_kwh_per_100km::numeric, 1) AS \"kWh/100km\", ROUND(distance_km::numeric, 1) AS \"Distance km\", ROUND(outside_temp_c::numeric, 1) AS \"Temp °C\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 AND avg_speed_kmh > 0 ORDER BY avg_speed_kmh",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 13
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT start_ts AS \"time\", COALESCE(start_address, '') || ' → ' || COALESCE(end_address, '') AS \"Route\", ROUND(avg_speed_kmh::numeric, 1) AS \"Avg Speed km/h\", ROUND(consumption_kwh_per_100km::numeric, 1) AS \"kWh/100km\", ROUND(distance_km::numeric, 1) AS \"Distance km\", ROUND(outside_temp_c::numeric, 1) AS \"Temp °C\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 AND avg_speed_kmh > 0 ORDER BY avg_speed_kmh",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "filterable": true
           }
         },
@@ -216,8 +419,15 @@
       "options": {
         "showHeader": true,
         "cellHeight": "sm",
-        "footer": { "show": false },
-        "sortBy": [{ "displayName": "Avg Speed km/h", "desc": false }]
+        "footer": {
+          "show": false
+        },
+        "sortBy": [
+          {
+            "displayName": "Avg Speed km/h",
+            "desc": false
+          }
+        ]
       }
     },
     {
@@ -225,31 +435,67 @@
       "title": "Monthly Average Consumption",
       "description": "Average consumption per month with temperature overlay",
       "type": "barchart",
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
-      "gridPos": { "h": 9, "w": 24, "x": 0, "y": 23 },
-      "targets": [{
-        "refId": "A",
-        "datasource": { "type": "postgres", "uid": "FordLogger" },
-        "rawSql": "SELECT to_char(date_trunc('month', start_ts), 'YYYY-MM') AS \"Month\", ROUND(AVG(consumption_kwh_per_100km)::numeric, 1) AS \"Avg kWh/100km\", ROUND(AVG(outside_temp_c)::numeric, 1) AS \"Avg Temp °C\" FROM trips WHERE $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 GROUP BY date_trunc('month', start_ts) ORDER BY date_trunc('month', start_ts)",
-        "format": "table"
-      }],
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT to_char(date_trunc('month', start_ts), 'YYYY-MM') AS \"Month\", ROUND(AVG(consumption_kwh_per_100km)::numeric, 1) AS \"Avg kWh/100km\", ROUND(AVG(outside_temp_c)::numeric, 1) AS \"Avg Temp °C\" FROM trips WHERE vin = '$vin' AND  $__timeFilter(start_ts) AND consumption_kwh_per_100km IS NOT NULL AND consumption_kwh_per_100km > 0 GROUP BY date_trunc('month', start_ts) ORDER BY date_trunc('month', start_ts)",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
         "defaults": {
           "decimals": 1,
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Avg kWh/100km" },
+            "matcher": {
+              "id": "byName",
+              "options": "Avg kWh/100km"
+            },
             "properties": [
-              { "id": "color", "value": { "fixedColor": "#5794F2", "mode": "fixed" } }
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#5794F2",
+                  "mode": "fixed"
+                }
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Avg Temp °C" },
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Temp °C"
+            },
             "properties": [
-              { "id": "color", "value": { "fixedColor": "#FF9830", "mode": "fixed" } },
-              { "id": "custom.axisPlacement", "value": "right" }
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "#FF9830",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              }
             ]
           }
         ]
@@ -258,22 +504,49 @@
         "orientation": "vertical",
         "xField": "Month",
         "stacking": "none",
-        "legend": { "displayMode": "list", "placement": "bottom" },
-        "tooltip": { "mode": "multi" }
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
       }
     }
   ],
-  "templating": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "name": "vin",
+        "label": "Vehicle",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
+        "query": "SELECT vin FROM vehicles ORDER BY vin",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {}
+      }
+    ]
+  },
   "annotations": {
-    "list": [{
-      "builtIn": 1,
-      "datasource": { "type": "grafana", "uid": "-- Grafana --" },
-      "enable": true,
-      "hide": true,
-      "iconColor": "rgba(0, 211, 255, 1)",
-      "name": "Annotations & Alerts",
-      "type": "dashboard"
-    }]
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "links": []
 }

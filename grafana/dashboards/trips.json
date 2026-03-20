@@ -14,22 +14,38 @@
   "refresh": "",
   "fiscalYearStartMonth": 0,
   "liveNow": false,
-  "tags": ["fordlogger", "trips"],
+  "tags": [
+    "fordlogger",
+    "trips"
+  ],
   "panels": [
     {
       "id": 1,
       "type": "stat",
       "title": "Total Trips",
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null }
+              {
+                "color": "blue",
+                "value": null
+              }
             ]
           }
         },
@@ -38,7 +54,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -51,8 +69,11 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT COUNT(*) AS \"Total Trips\" FROM trips WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT COUNT(*) AS \"Total Trips\" FROM trips WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "format": "table",
           "editorMode": "code"
         }
@@ -62,17 +83,30 @@
       "id": 2,
       "type": "stat",
       "title": "Total Distance",
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "km",
           "decimals": 1,
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           }
         },
@@ -81,7 +115,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -94,8 +130,11 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT COALESCE(SUM(distance_km), 0) AS \"Total Distance km\" FROM trips WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT COALESCE(SUM(distance_km), 0) AS \"Total Distance km\" FROM trips WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "format": "table",
           "editorMode": "code"
         }
@@ -105,20 +144,42 @@
       "id": 3,
       "type": "stat",
       "title": "Avg Consumption",
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "kWh/100km",
           "decimals": 1,
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "orange", "value": null },
-              { "color": "green", "value": 0 },
-              { "color": "yellow", "value": 18 },
-              { "color": "red", "value": 25 }
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 18
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
             ]
           }
         },
@@ -127,7 +188,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -140,8 +203,11 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT COALESCE(AVG(consumption_kwh_per_100km), 0) AS \"Avg Consumption\" FROM trips WHERE consumption_kwh_per_100km IS NOT NULL AND start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT COALESCE(AVG(consumption_kwh_per_100km), 0) AS \"Avg Consumption\" FROM trips WHERE vin = '$vin' AND  consumption_kwh_per_100km IS NOT NULL AND start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "format": "table",
           "editorMode": "code"
         }
@@ -151,17 +217,30 @@
       "id": 4,
       "type": "stat",
       "title": "Avg Trip Distance",
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "km",
           "decimals": 1,
-          "color": { "mode": "thresholds" },
+          "color": {
+            "mode": "thresholds"
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "purple", "value": null }
+              {
+                "color": "purple",
+                "value": null
+              }
             ]
           }
         },
@@ -170,7 +249,9 @@
       "options": {
         "reduceOptions": {
           "values": false,
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": ""
         },
         "orientation": "auto",
@@ -183,8 +264,11 @@
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT COALESCE(AVG(distance_km), 0) AS \"Avg Trip Distance\" FROM trips WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT COALESCE(AVG(distance_km), 0) AS \"Avg Trip Distance\" FROM trips WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "format": "table",
           "editorMode": "code"
         }
@@ -194,95 +278,201 @@
       "id": 5,
       "type": "table",
       "title": "Trip List",
-      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 4 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "custom": {
             "align": "auto",
-            "cellOptions": { "type": "auto" },
+            "cellOptions": {
+              "type": "auto"
+            },
             "inspect": false
           }
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "Start" },
+            "matcher": {
+              "id": "byName",
+              "options": "Start"
+            },
             "properties": [
-              { "id": "custom.width", "value": 150 }
+              {
+                "id": "custom.width",
+                "value": 150
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "From" },
+            "matcher": {
+              "id": "byName",
+              "options": "From"
+            },
             "properties": [
-              { "id": "custom.width", "value": 200 }
+              {
+                "id": "custom.width",
+                "value": 200
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "To" },
+            "matcher": {
+              "id": "byName",
+              "options": "To"
+            },
             "properties": [
-              { "id": "custom.width", "value": 200 }
+              {
+                "id": "custom.width",
+                "value": 200
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Distance km" },
+            "matcher": {
+              "id": "byName",
+              "options": "Distance km"
+            },
             "properties": [
-              { "id": "unit", "value": "km" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "km"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Duration" },
+            "matcher": {
+              "id": "byName",
+              "options": "Duration"
+            },
             "properties": [
-              { "id": "custom.width", "value": 100 }
+              {
+                "id": "custom.width",
+                "value": 100
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Start SoC %" },
+            "matcher": {
+              "id": "byName",
+              "options": "Start SoC %"
+            },
             "properties": [
-              { "id": "unit", "value": "percent" },
-              { "id": "decimals", "value": 0 }
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "End SoC %" },
+            "matcher": {
+              "id": "byName",
+              "options": "End SoC %"
+            },
             "properties": [
-              { "id": "unit", "value": "percent" },
-              { "id": "decimals", "value": 0 }
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "SoC Used %" },
+            "matcher": {
+              "id": "byName",
+              "options": "SoC Used %"
+            },
             "properties": [
-              { "id": "unit", "value": "percent" },
-              { "id": "decimals", "value": 0 }
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Consumption" },
+            "matcher": {
+              "id": "byName",
+              "options": "Consumption"
+            },
             "properties": [
-              { "id": "unit", "value": "kWh/100km" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "kWh/100km"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Avg Speed" },
+            "matcher": {
+              "id": "byName",
+              "options": "Avg Speed"
+            },
             "properties": [
-              { "id": "unit", "value": "velocitykmh" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Max Speed" },
+            "matcher": {
+              "id": "byName",
+              "options": "Max Speed"
+            },
             "properties": [
-              { "id": "unit", "value": "velocitykmh" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "velocitykmh"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "Outside Temp" },
+            "matcher": {
+              "id": "byName",
+              "options": "Outside Temp"
+            },
             "properties": [
-              { "id": "unit", "value": "celsius" },
-              { "id": "decimals", "value": 1 }
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
             ]
           }
         ]
@@ -292,19 +482,27 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "countRows": false,
           "fields": ""
         },
         "sortBy": [
-          { "displayName": "Start", "desc": true }
+          {
+            "displayName": "Start",
+            "desc": true
+          }
         ]
       },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT\n  start_ts AS \"Start\",\n  COALESCE(start_address, '') AS \"From\",\n  COALESCE(end_address, '') AS \"To\",\n  distance_km AS \"Distance km\",\n  CASE\n    WHEN duration_s >= 3600 THEN\n      CONCAT(FLOOR(duration_s / 3600)::TEXT, 'h ', LPAD((FLOOR(duration_s % 3600 / 60))::TEXT, 2, '0'), 'm')\n    ELSE\n      CONCAT(FLOOR(duration_s / 60)::TEXT, 'm ', LPAD((duration_s % 60)::TEXT, 2, '0'), 's')\n  END AS \"Duration\",\n  start_soc_pct AS \"Start SoC %\",\n  end_soc_pct AS \"End SoC %\",\n  soc_used_pct AS \"SoC Used %\",\n  consumption_kwh_per_100km AS \"Consumption\",\n  avg_speed_kmh AS \"Avg Speed\",\n  max_speed_kmh AS \"Max Speed\",\n  outside_temp_c AS \"Outside Temp\"\nFROM trips\nWHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo()\nORDER BY start_ts DESC;",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT\n  start_ts AS \"Start\",\n  COALESCE(start_address, '') AS \"From\",\n  COALESCE(end_address, '') AS \"To\",\n  distance_km AS \"Distance km\",\n  CASE\n    WHEN duration_s >= 3600 THEN\n      CONCAT(FLOOR(duration_s / 3600)::TEXT, 'h ', LPAD((FLOOR(duration_s % 3600 / 60))::TEXT, 2, '0'), 'm')\n    ELSE\n      CONCAT(FLOOR(duration_s / 60)::TEXT, 'm ', LPAD((duration_s % 60)::TEXT, 2, '0'), 's')\n  END AS \"Duration\",\n  start_soc_pct AS \"Start SoC %\",\n  end_soc_pct AS \"End SoC %\",\n  soc_used_pct AS \"SoC Used %\",\n  consumption_kwh_per_100km AS \"Consumption\",\n  avg_speed_kmh AS \"Avg Speed\",\n  max_speed_kmh AS \"Max Speed\",\n  outside_temp_c AS \"Outside Temp\"\nFROM trips\nWHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo()\nORDER BY start_ts DESC;",
           "format": "table",
           "editorMode": "code"
         }
@@ -314,13 +512,23 @@
       "id": 6,
       "type": "timeseries",
       "title": "Consumption per Trip (kWh/100km)",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "kWh/100km",
           "decimals": 1,
-          "color": { "mode": "palette-classic" },
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
@@ -332,37 +540,71 @@
             "drawStyle": "bars",
             "fillOpacity": 50,
             "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
+            "scaleDistribution": {
+              "type": "linear"
+            },
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 18 },
-              { "color": "red", "value": 25 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 18
+              },
+              {
+                "color": "red",
+                "value": 25
+              }
             ]
           }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "showValues": "auto", "calcs": ["mean", "max"] }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showValues": "auto",
+          "calcs": [
+            "mean",
+            "max"
+          ]
+        }
       },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT\n  start_ts AS \"time\",\n  consumption_kwh_per_100km AS \"Consumption\"\nFROM trips\nWHERE\n  consumption_kwh_per_100km IS NOT NULL\n  AND start_ts >= $__timeFrom()\n  AND start_ts <= $__timeTo()\nORDER BY start_ts ASC;",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT\n  start_ts AS \"time\",\n  consumption_kwh_per_100km AS \"Consumption\"\nFROM trips\nWHERE vin = '$vin' AND \n  consumption_kwh_per_100km IS NOT NULL\n  AND start_ts >= $__timeFrom()\n  AND start_ts <= $__timeTo()\nORDER BY start_ts ASC;",
           "format": "time_series",
           "editorMode": "code"
         }
@@ -372,13 +614,23 @@
       "id": 7,
       "type": "timeseries",
       "title": "Trip Distance (km)",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
-      "datasource": { "type": "postgres", "uid": "FordLogger" },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "datasource": {
+        "type": "postgres",
+        "uid": "FordLogger"
+      },
       "fieldConfig": {
         "defaults": {
           "unit": "km",
           "decimals": 1,
-          "color": { "mode": "palette-classic" },
+          "color": {
+            "mode": "palette-classic"
+          },
           "custom": {
             "axisBorderShow": false,
             "axisCenteredZero": false,
@@ -390,43 +642,91 @@
             "drawStyle": "bars",
             "fillOpacity": 50,
             "gradientMode": "none",
-            "hideFrom": { "legend": false, "tooltip": false, "viz": false },
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
             "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
-            "scaleDistribution": { "type": "linear" },
+            "scaleDistribution": {
+              "type": "linear"
+            },
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "group": "A", "mode": "none" },
-            "thresholdsStyle": { "mode": "off" }
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "blue", "value": null }
+              {
+                "color": "blue",
+                "value": null
+              }
             ]
           }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "showValues": "auto", "calcs": ["mean", "max", "sum"] }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showValues": "auto",
+          "calcs": [
+            "mean",
+            "max",
+            "sum"
+          ]
+        }
       },
       "targets": [
         {
           "refId": "A",
-          "datasource": { "type": "postgres", "uid": "FordLogger" },
-          "rawSql": "SELECT\n  start_ts AS \"time\",\n  distance_km AS \"Distance\"\nFROM trips\nWHERE\n  distance_km IS NOT NULL\n  AND start_ts >= $__timeFrom()\n  AND start_ts <= $__timeTo()\nORDER BY start_ts ASC;",
+          "datasource": {
+            "type": "postgres",
+            "uid": "FordLogger"
+          },
+          "rawSql": "SELECT\n  start_ts AS \"time\",\n  distance_km AS \"Distance\"\nFROM trips\nWHERE vin = '$vin' AND \n  distance_km IS NOT NULL\n  AND start_ts >= $__timeFrom()\n  AND start_ts <= $__timeTo()\nORDER BY start_ts ASC;",
           "format": "time_series",
           "editorMode": "code"
         }
       ]
     }
   ],
-  "templating": { "list": [] },
-  "annotations": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "name": "vin",
+        "label": "Vehicle",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
+        "query": "SELECT vin FROM vehicles ORDER BY vin",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {}
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
   "links": [],
   "version": 1
 }

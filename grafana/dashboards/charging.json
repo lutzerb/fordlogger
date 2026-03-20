@@ -8,7 +8,10 @@
   "fiscalYearStartMonth": 0,
   "liveNow": false,
   "refresh": "",
-  "tags": ["fordlogger", "charging"],
+  "tags": [
+    "fordlogger",
+    "charging"
+  ],
   "time": {
     "from": "now-30d",
     "to": "now"
@@ -20,7 +23,12 @@
       "id": 1,
       "type": "stat",
       "title": "Total Sessions",
-      "gridPos": { "h": 4, "w": 6, "x": 0, "y": 0 },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -33,7 +41,10 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
           "unit": "none"
@@ -46,7 +57,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -62,7 +75,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(*) AS \"Total Sessions\" FROM charge_sessions WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "rawSql": "SELECT COUNT(*) AS \"Total Sessions\" FROM charge_sessions WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "refId": "A"
         }
       ]
@@ -71,7 +84,12 @@
       "id": 2,
       "type": "stat",
       "title": "Total Energy Added",
-      "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -84,7 +102,10 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
           "unit": "kwatth",
@@ -98,7 +119,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -114,7 +137,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COALESCE(SUM(energy_added_kwh), 0) AS \"Total Energy (kWh)\" FROM charge_sessions WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "rawSql": "SELECT COALESCE(SUM(energy_added_kwh), 0) AS \"Total Energy (kWh)\" FROM charge_sessions WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "refId": "A"
         }
       ]
@@ -123,7 +146,12 @@
       "id": 3,
       "type": "stat",
       "title": "Average Session Duration",
-      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -136,7 +164,10 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           },
           "unit": "m",
@@ -150,7 +181,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -166,7 +199,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COALESCE(ROUND(AVG(duration_s) / 60.0, 0), 0) AS \"Avg Duration (min)\" FROM charge_sessions WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "rawSql": "SELECT COALESCE(ROUND(AVG(duration_s) / 60.0, 0), 0) AS \"Avg Duration (min)\" FROM charge_sessions WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "refId": "A"
         }
       ]
@@ -175,7 +208,12 @@
       "id": 4,
       "type": "stat",
       "title": "Max Power Seen",
-      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 0 },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -188,9 +226,18 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null },
-              { "color": "yellow", "value": 50 },
-              { "color": "red", "value": 100 }
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
             ]
           },
           "unit": "kwatt",
@@ -204,7 +251,9 @@
         "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
@@ -220,7 +269,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COALESCE(MAX(max_power_kw), 0) AS \"Max Power (kW)\" FROM charge_sessions WHERE start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
+          "rawSql": "SELECT COALESCE(MAX(max_power_kw), 0) AS \"Max Power (kW)\" FROM charge_sessions WHERE vin = '$vin' AND  start_ts >= $__timeFrom() AND start_ts <= $__timeTo();",
           "refId": "A"
         }
       ]
@@ -229,7 +278,12 @@
       "id": 5,
       "type": "table",
       "title": "Charge Sessions",
-      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 4 },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -247,92 +301,227 @@
         },
         "overrides": [
           {
-            "matcher": { "id": "byName", "options": "start_ts" },
+            "matcher": {
+              "id": "byName",
+              "options": "start_ts"
+            },
             "properties": [
-              { "id": "displayName", "value": "Start" },
-              { "id": "unit", "value": "dateTimeAsIso" },
-              { "id": "custom.width", "value": 170 }
+              {
+                "id": "displayName",
+                "value": "Start"
+              },
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              },
+              {
+                "id": "custom.width",
+                "value": 170
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "end_ts" },
+            "matcher": {
+              "id": "byName",
+              "options": "end_ts"
+            },
             "properties": [
-              { "id": "displayName", "value": "End" },
-              { "id": "unit", "value": "dateTimeAsIso" },
-              { "id": "custom.width", "value": 170 }
+              {
+                "id": "displayName",
+                "value": "End"
+              },
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              },
+              {
+                "id": "custom.width",
+                "value": 170
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "location" },
+            "matcher": {
+              "id": "byName",
+              "options": "location"
+            },
             "properties": [
-              { "id": "displayName", "value": "Location" },
-              { "id": "custom.width", "value": 220 }
+              {
+                "id": "displayName",
+                "value": "Location"
+              },
+              {
+                "id": "custom.width",
+                "value": 220
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "charge_type" },
+            "matcher": {
+              "id": "byName",
+              "options": "charge_type"
+            },
             "properties": [
-              { "id": "displayName", "value": "Type" },
-              { "id": "custom.width", "value": 60 }
+              {
+                "id": "displayName",
+                "value": "Type"
+              },
+              {
+                "id": "custom.width",
+                "value": 60
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "start_soc_pct" },
+            "matcher": {
+              "id": "byName",
+              "options": "start_soc_pct"
+            },
             "properties": [
-              { "id": "displayName", "value": "Start SoC (%)" },
-              { "id": "unit", "value": "percent" },
-              { "id": "custom.width", "value": 100 }
+              {
+                "id": "displayName",
+                "value": "Start SoC (%)"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "end_soc_pct" },
+            "matcher": {
+              "id": "byName",
+              "options": "end_soc_pct"
+            },
             "properties": [
-              { "id": "displayName", "value": "End SoC (%)" },
-              { "id": "unit", "value": "percent" },
-              { "id": "custom.width", "value": 100 }
+              {
+                "id": "displayName",
+                "value": "End SoC (%)"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.width",
+                "value": 100
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "soc_added_pct" },
+            "matcher": {
+              "id": "byName",
+              "options": "soc_added_pct"
+            },
             "properties": [
-              { "id": "displayName", "value": "SoC Added (%)" },
-              { "id": "unit", "value": "percent" },
-              { "id": "custom.width", "value": 110 }
+              {
+                "id": "displayName",
+                "value": "SoC Added (%)"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "energy_added_kwh" },
+            "matcher": {
+              "id": "byName",
+              "options": "energy_added_kwh"
+            },
             "properties": [
-              { "id": "displayName", "value": "Energy (kWh)" },
-              { "id": "unit", "value": "kwatth" },
-              { "id": "decimals", "value": 2 },
-              { "id": "custom.width", "value": 110 }
+              {
+                "id": "displayName",
+                "value": "Energy (kWh)"
+              },
+              {
+                "id": "unit",
+                "value": "kwatth"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "max_power_kw" },
+            "matcher": {
+              "id": "byName",
+              "options": "max_power_kw"
+            },
             "properties": [
-              { "id": "displayName", "value": "Max Power (kW)" },
-              { "id": "unit", "value": "kwatt" },
-              { "id": "decimals", "value": 1 },
-              { "id": "custom.width", "value": 120 }
+              {
+                "id": "displayName",
+                "value": "Max Power (kW)"
+              },
+              {
+                "id": "unit",
+                "value": "kwatt"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "duration_min" },
+            "matcher": {
+              "id": "byName",
+              "options": "duration_min"
+            },
             "properties": [
-              { "id": "displayName", "value": "Duration (min)" },
-              { "id": "decimals", "value": 0 },
-              { "id": "custom.width", "value": 110 }
+              {
+                "id": "displayName",
+                "value": "Duration (min)"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 110
+              }
             ]
           },
           {
-            "matcher": { "id": "byName", "options": "outside_temp_c" },
+            "matcher": {
+              "id": "byName",
+              "options": "outside_temp_c"
+            },
             "properties": [
-              { "id": "displayName", "value": "Outside Temp (C)" },
-              { "id": "unit", "value": "celsius" },
-              { "id": "decimals", "value": 1 },
-              { "id": "custom.width", "value": 130 }
+              {
+                "id": "displayName",
+                "value": "Outside Temp (C)"
+              },
+              {
+                "id": "unit",
+                "value": "celsius"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.width",
+                "value": 130
+              }
             ]
           }
         ]
@@ -342,7 +531,9 @@
         "cellHeight": "sm",
         "footer": {
           "show": false,
-          "reducer": ["sum"],
+          "reducer": [
+            "sum"
+          ],
           "countRows": false,
           "fields": ""
         },
@@ -362,7 +553,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  start_ts,\n  COALESCE(address, '') AS location,\n  charge_type,\n  start_soc_pct,\n  end_soc_pct,\n  soc_added_pct,\n  energy_added_kwh,\n  max_power_kw,\n  ROUND(duration_s / 60.0, 0) AS duration_min,\n  outside_temp_c\nFROM charge_sessions\nWHERE start_ts >= $__timeFrom()\n  AND start_ts <= $__timeTo()\nORDER BY start_ts DESC;",
+          "rawSql": "SELECT\n  start_ts,\n  COALESCE(address, '') AS location,\n  charge_type,\n  start_soc_pct,\n  end_soc_pct,\n  soc_added_pct,\n  energy_added_kwh,\n  max_power_kw,\n  ROUND(duration_s / 60.0, 0) AS duration_min,\n  outside_temp_c\nFROM charge_sessions\nWHERE vin = '$vin' AND  start_ts >= $__timeFrom()\n  AND start_ts <= $__timeTo()\nORDER BY start_ts DESC;",
           "refId": "A"
         }
       ]
@@ -372,7 +563,12 @@
       "type": "timeseries",
       "title": "Charge Power (kW)",
       "description": "Charge power over time from position data (charge curve)",
-      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 14 },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -421,7 +617,10 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "green", "value": null }
+              {
+                "color": "green",
+                "value": null
+              }
             ]
           }
         },
@@ -429,7 +628,10 @@
       },
       "options": {
         "legend": {
-          "calcs": ["max", "mean"],
+          "calcs": [
+            "max",
+            "mean"
+          ],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -448,7 +650,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT\n  ts AS \"time\",\n  charge_power_kw AS \"Charge Power\"\nFROM positions\nWHERE $__timeFilter(ts)\n  AND charge_power_kw > 0\nORDER BY ts;",
+          "rawSql": "SELECT\n  ts AS \"time\",\n  charge_power_kw AS \"Charge Power\"\nFROM positions\nWHERE vin = '$vin' AND  $__timeFilter(ts)\n  AND charge_power_kw > 0\nORDER BY ts;",
           "refId": "A"
         }
       ]
@@ -458,7 +660,12 @@
       "type": "timeseries",
       "title": "SoC During Charging",
       "description": "State of charge while the vehicle is in charging state",
-      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 14 },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
       "datasource": {
         "type": "postgres",
         "uid": "FordLogger"
@@ -508,9 +715,18 @@
           "thresholds": {
             "mode": "absolute",
             "steps": [
-              { "color": "red", "value": null },
-              { "color": "yellow", "value": 20 },
-              { "color": "green", "value": 80 }
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 20
+              },
+              {
+                "color": "green",
+                "value": 80
+              }
             ]
           }
         },
@@ -518,7 +734,11 @@
       },
       "options": {
         "legend": {
-          "calcs": ["min", "max", "lastNotNull"],
+          "calcs": [
+            "min",
+            "max",
+            "lastNotNull"
+          ],
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true
@@ -537,14 +757,29 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT\n  ts AS \"time\",\n  soc_pct AS \"SoC\"\nFROM positions\nWHERE $__timeFilter(ts)\n  AND state = 'charging'\nORDER BY ts;",
+          "rawSql": "SELECT\n  ts AS \"time\",\n  soc_pct AS \"SoC\"\nFROM positions\nWHERE vin = '$vin' AND  $__timeFilter(ts)\n  AND state = 'charging'\nORDER BY ts;",
           "refId": "A"
         }
       ]
     }
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "name": "vin",
+        "label": "Vehicle",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
+        "query": "SELECT vin FROM vehicles ORDER BY vin",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {}
+      }
+    ]
   },
   "annotations": {
     "list": [

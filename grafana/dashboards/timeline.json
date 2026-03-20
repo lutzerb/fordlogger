@@ -8,7 +8,9 @@
   "fiscalYearStartMonth": 0,
   "liveNow": false,
   "refresh": "",
-  "tags": ["fordlogger"],
+  "tags": [
+    "fordlogger"
+  ],
   "time": {
     "from": "now-7d",
     "to": "now"
@@ -37,7 +39,7 @@
             "type": "postgres",
             "uid": "FordLogger"
           },
-          "rawSql": "SELECT ts as time, state as \"State\" FROM states WHERE $__timeFilter(ts) ORDER BY ts",
+          "rawSql": "SELECT ts as time, state as \"State\" FROM states WHERE vin = '$vin' AND  $__timeFilter(ts) ORDER BY ts",
           "format": "table",
           "editorMode": "code"
         }
@@ -118,7 +120,7 @@
             "type": "postgres",
             "uid": "FordLogger"
           },
-          "rawSql": "SELECT ts as time, soc_pct as \"SoC %\" FROM positions WHERE $__timeFilter(ts) AND soc_pct IS NOT NULL ORDER BY ts",
+          "rawSql": "SELECT ts as time, soc_pct as \"SoC %\" FROM positions WHERE vin = '$vin' AND  $__timeFilter(ts) AND soc_pct IS NOT NULL ORDER BY ts",
           "format": "table",
           "editorMode": "code"
         },
@@ -128,7 +130,7 @@
             "type": "postgres",
             "uid": "FordLogger"
           },
-          "rawSql": "SELECT ts as time, state as \"State\" FROM states WHERE $__timeFilter(ts) ORDER BY ts",
+          "rawSql": "SELECT ts as time, state as \"State\" FROM states WHERE vin = '$vin' AND  $__timeFilter(ts) ORDER BY ts",
           "format": "table",
           "editorMode": "code",
           "hide": true
@@ -245,7 +247,9 @@
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true,
-          "calcs": ["lastNotNull"]
+          "calcs": [
+            "lastNotNull"
+          ]
         }
       }
     },
@@ -270,7 +274,7 @@
             "type": "postgres",
             "uid": "FordLogger"
           },
-          "rawSql": "SELECT ts as time, speed_kmh as \"Speed km/h\" FROM positions WHERE $__timeFilter(ts) AND speed_kmh IS NOT NULL ORDER BY ts",
+          "rawSql": "SELECT ts as time, speed_kmh as \"Speed km/h\" FROM positions WHERE vin = '$vin' AND  $__timeFilter(ts) AND speed_kmh IS NOT NULL ORDER BY ts",
           "format": "table",
           "editorMode": "code"
         }
@@ -327,13 +331,31 @@
           "displayMode": "list",
           "placement": "bottom",
           "showLegend": true,
-          "calcs": ["max", "mean"]
+          "calcs": [
+            "max",
+            "mean"
+          ]
         }
       }
     }
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "name": "vin",
+        "label": "Vehicle",
+        "type": "query",
+        "datasource": {
+          "type": "postgres",
+          "uid": "FordLogger"
+        },
+        "query": "SELECT vin FROM vehicles ORDER BY vin",
+        "refresh": 2,
+        "sort": 0,
+        "includeAll": false,
+        "current": {}
+      }
+    ]
   },
   "annotations": {
     "list": [
