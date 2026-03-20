@@ -275,8 +275,8 @@ Re-run the auth flow: `docker compose run -p 8080:8080 fordlogger python -m ford
 **Database connection lost**
 FordLogger automatically reconnects to PostgreSQL if the connection drops. Check `docker compose logs fordlogger` for reconnection messages.
 
-**Non-ASCII characters in Ford developer portal**
-Use only standard English characters (a–z, 0–9) in your name, company name, and app description when registering on the Ford developer portal. Special characters from non-English alphabets (umlauts, accents, etc.) can cause silent failures during account or app creation.
+**Non-ASCII characters or incomplete fields in Ford developer portal**
+When registering on the Ford developer portal: (1) use only standard English characters (a–z, 0–9) — special characters from non-English alphabets (umlauts, accents, etc.) can cause silent failures; and (2) fill out every field in the registration form completely — leaving optional-looking fields blank has been reported to cause errors during account or app creation.
 
 **Some trip fields are empty (consumption, avg speed, outside temp)**
 These values are calculated from metrics that not all Ford vehicles report. To check what your vehicle actually sends, use the diagnostic script:
