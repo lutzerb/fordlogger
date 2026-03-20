@@ -26,6 +26,7 @@ Currently tested with the **Ford Puma Gen-E (2025)** and **Ford Explorer (2024)*
 - **Charge session detection** — Records energy added, max/avg power, AC/DC classification
 - **7 Grafana dashboards** — Overview, Trips, Charging, Consumption, Battery Degradation, GPS Map, Timeline
 - **Full telemetry storage** — Raw JSON preserved for future-proofing
+- **Multi-vehicle support** — Multiple cars in one account, switchable via dashboard dropdown
 - **Docker Compose deployment** — One command to run everything
 
 ## Requirements
