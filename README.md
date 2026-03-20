@@ -14,7 +14,7 @@ FordLogger uses Ford's **official FordConnect Query API**, provided under the [E
 
 ## Tested vehicles
 
-Currently tested with the **Ford Puma Gen-E (2025)**. It should work with other FordConnect-enabled vehicles, including ICE (petrol/diesel) models — the telemetry endpoints are the same. However, some dashboards (Charging, Consumption, Battery Degradation) are designed for EVs and would need adaptation for ICE vehicles.
+Currently tested with the **Ford Puma Gen-E (2025)** and **Ford Explorer (2024)**. It should work with other FordConnect-enabled vehicles, including ICE (petrol/diesel) models — the telemetry endpoints are the same. However, some dashboards (Charging, Consumption, Battery Degradation) are designed for EVs and would need adaptation for ICE vehicles.
 
 **If you have a different Ford model, I'd love to hear from you!** Especially if you can test with ICE vehicles — see [Contributing](#contributing).
 
@@ -49,11 +49,7 @@ Before you can use FordLogger, you need API credentials from Ford's developer po
 
 ### 1. Create a Ford Developer account
 
-Go to [https://developer.ford.com/developer-eu](https://developer.ford.com/developer-eu) and create an account. **You must use the same email address that you use in the FordPass app** — Ford links API access to your FordPass account.
-
-> **Tips from the community:**
-> - **Fill out every field** in the registration form completely — leaving any field blank can cause errors during signup.
-> - **Use only standard English characters** (a–z, 0–9) throughout — special characters from non-English alphabets (umlauts, accents, etc.) can cause silent failures.
+Go to [https://developer.ford.com/developer-eu](https://developer.ford.com/developer-eu) and create an account. **You must use the same email address that you use in the FordPass app** — Ford links API access to your FordPass account. Fill out every field in the registration form completely and use only standard English characters (a–z, 0–9) — special characters and incomplete fields have been reported to cause errors.
 
 ### 2. Create an application
 
