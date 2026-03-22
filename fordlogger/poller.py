@@ -13,10 +13,10 @@ log = logging.getLogger("fordlogger")
 
 
 class Poller:
-    def __init__(self, cfg: dict, conn, api: FordAPI):
+    def __init__(self, cfg: dict, conn, apis: list):
         self.cfg = cfg
         self.conn = conn
-        self.api = api
+        self.apis = apis if isinstance(apis, list) else [apis]
         self._db_failures = 0
         self.machines: dict[str, StateMachine] = {}
         self._drive_start: dict[str, datetime] = {}
@@ -62,32 +62,34 @@ class Poller:
                 return False
 
     def poll_once(self):
-        """Execute a single poll cycle: garage (periodic) + telemetry."""
+        """Execute a single poll cycle for all vehicles."""
         if not self._ensure_db():
             return
 
         now = time.time()
 
-        # Periodic garage update
-        if now - self._last_garage_update > self.garage_interval_s:
+        for api in self.apis:
+            # Periodic garage update
+            if now - self._last_garage_update > self.garage_interval_s:
+                try:
+                    vehicles = api.get_garage()
+                    for v in vehicles:
+                        db.upsert_vehicle(self.conn, v)
+                    log.info("Garage updated: %d vehicle(s)", len(vehicles))
+                except Exception as e:
+                    log.error("Garage error: %s", e)
+
+            # Telemetry
             try:
-                vehicles = self.api.get_garage()
-                for v in vehicles:
-                    db.upsert_vehicle(self.conn, v)
-                log.info("Garage updated: %d vehicle(s)", len(vehicles))
-                self._last_garage_update = now
+                positions = api.get_telemetry()
             except Exception as e:
-                log.error("Garage error: %s", e)
+                log.error("Telemetry error: %s", e, exc_info=True)
+                continue
 
-        # Telemetry
-        try:
-            positions = self.api.get_telemetry()
-        except Exception as e:
-            log.error("Telemetry error: %s", e, exc_info=True)
-            return
+            for pos in positions:
+                self._process_position(pos)
 
-        for pos in positions:
-            self._process_position(pos)
+        self._last_garage_update = now
 
     def _process_position(self, pos):
         vin = pos.vin

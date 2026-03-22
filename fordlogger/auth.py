@@ -20,7 +20,7 @@ class _CallbackHandler(BaseHTTPRequestHandler):
             _CallbackHandler.auth_code = params["code"][0]
             self.send_response(200)
             self.end_headers()
-            self.wfile.write(b"<h2>Autorisierung erfolgreich! Fenster schliessen.</h2>")
+            self.wfile.write(b"<h2>Authorization successful! You can close this window.</h2>")
         else:
             self.send_response(400)
             self.end_headers()
@@ -56,7 +56,7 @@ def do_auth_flow(cfg: dict):
     login_url = cfg["auth_url"] + "?" + params
 
     print("\n" + "=" * 60)
-    print("Bitte diese URL im Browser oeffnen:\n")
+    print("Open this URL in your browser:\n")
     print(login_url)
     print("=" * 60 + "\n")
 
@@ -89,6 +89,30 @@ def do_auth_flow(cfg: dict):
     resp.raise_for_status()
     tokens = resp.json()
     tokens["obtained_at"] = time.time()
+
+    # Try to detect the VIN and save to tokens_{VIN}.json
+    # This allows multiple vehicles without overwriting tokens.json
+    try:
+        garage = requests.get(
+            f"{cfg['api_base']}/garage",
+            headers={"Authorization": f"Bearer {tokens['access_token']}"},
+            timeout=15,
+        )
+        garage.raise_for_status()
+        data = garage.json()
+        items = data if isinstance(data, list) else data.get("vehicles", [data])
+        vin = next(
+            (v.get("vin") or v.get("vehicleId") for v in items if v.get("vin") or v.get("vehicleId")),
+            None,
+        )
+        if vin:
+            token_path = Path(f"tokens_{vin}.json")
+            token_path.write_text(json.dumps(tokens, indent=2))
+            log.info("Tokens saved to %s", token_path)
+            return
+    except Exception as e:
+        log.warning("Could not detect VIN after auth, falling back to tokens.json: %s", e)
+
     save_tokens(cfg, tokens)
     log.info("Tokens saved to %s", _token_path(cfg))
 
@@ -108,14 +132,14 @@ def refresh_access_token(cfg: dict, tokens: dict) -> dict:
     t = resp.json()
     t["obtained_at"] = time.time()
     save_tokens(cfg, t)
-    log.info("Token refreshed, laeuft in %ss ab", t.get("expires_in", "?"))
+    log.info("Token refreshed, expires in %ss", t.get("expires_in", "?"))
     return t
 
 
 def get_valid_token(cfg: dict) -> str:
     tokens = load_tokens(cfg)
     if not tokens:
-        raise RuntimeError("Keine Tokens – zuerst: python -m fordlogger --auth")
+        raise RuntimeError("No tokens found — run: python -m fordlogger --auth")
     needs_refresh = (
         "access_token" not in tokens
         or time.time() > tokens.get("obtained_at", 0) + tokens.get("expires_in", 3600) - 60
