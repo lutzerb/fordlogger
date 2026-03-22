@@ -261,17 +261,22 @@ Uses Ford's FordConnect Query API (`fcon-query/v1`), the same API used by [evcc]
 **429 Too Many Requests**
 Ford's API allows ~1 request per minute. FordLogger retries automatically with backoff (30s, 60s, 120s). If you see persistent 429 errors after a fresh start, wait a few minutes — it resolves itself.
 
-**OAuth callback timeout ("No auth code received within 120s")**
-The auth flow opens a local HTTP server on port 8080 and waits for Ford to redirect your browser back to it. This times out if:
-- Your browser is on a different machine than where Docker is running — use an SSH tunnel: `ssh -L 8080:localhost:8080 your-server`, then open the auth URL in your local browser
-- Port 8080 is already in use or blocked by a firewall — free the port or adjust your firewall rules
-- You took more than 120 seconds to log in and authorize in the browser — just re-run the auth command
+**OAuth callback not working (port 8080 blocked or on a remote server)**
+The auth flow opens a local HTTP server on port 8080 and waits for Ford to redirect your browser to `localhost:8080/callback`. If this does not work (e.g. Docker is on a remote server, or port 8080 is blocked), there is a manual fallback built in:
+
+1. Run the auth command as usual
+2. Open the printed URL in your browser and complete the login
+3. After authorizing, Ford will redirect to `localhost:8080/callback?code=...` — your browser will likely show an error ("connection refused") but that's fine
+4. Copy the **full URL** from your browser's address bar and paste it into the terminal when prompted
+
+Alternatively, set up an SSH tunnel so the callback is forwarded automatically:
+```bash
+# Run this on your local machine before starting auth
+ssh -L 8080:localhost:8080 your-server
+```
 
 **Authentication fails immediately after creating API credentials**
 Ford's backend may need time to provision new app credentials. Wait 15-30 minutes and try again.
-
-**OAuth callback not reachable on remote server**
-The auth flow starts a local HTTP server on port 8080. If Docker runs on a remote server but your browser is local, use an SSH tunnel: `ssh -L 8080:localhost:8080 your-server`
 
 **No new data points appearing**
 When the car is parked with ignition off, Ford's API returns stale data with the same timestamp. FordLogger skips duplicate data, so no new rows are inserted until the car wakes up (door open, ignition on, charging starts). Check `docker compose logs -f fordlogger` to verify the poller is running.

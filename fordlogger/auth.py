@@ -64,18 +64,28 @@ def do_auth_flow(cfg: dict):
     server = HTTPServer(("localhost", 8080), _CallbackHandler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
     log.info("Waiting for OAuth callback (max. 120s) ...")
+    print("If the automatic callback does not work, copy the full URL from your")
+    print("browser's address bar after login and paste it below.\n")
 
     for _ in range(240):
         if _CallbackHandler.auth_code:
             break
         time.sleep(0.5)
-    else:
-        server.shutdown()
-        raise TimeoutError("No auth code received within 120s")
 
     server.shutdown()
-    code = _CallbackHandler.auth_code
-    log.info("Auth code received: %s...", code[:10])
+
+    if _CallbackHandler.auth_code:
+        code = _CallbackHandler.auth_code
+        log.info("Auth code received via callback: %s...", code[:10])
+    else:
+        print("\nNo automatic callback received.")
+        print("Paste the full callback URL from your browser and press Enter:")
+        url = input("> ").strip()
+        params = parse_qs(urlparse(url).query)
+        if "code" not in params:
+            raise ValueError("No 'code' parameter found in the pasted URL")
+        code = params["code"][0]
+        log.info("Auth code received via manual URL: %s...", code[:10])
 
     scope = f"{cfg['client_id']} offline_access openid"
     resp = requests.post(cfg["token_url"], data={
