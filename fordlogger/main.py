@@ -20,9 +20,12 @@ log = logging.getLogger("fordlogger")
 
 def _discover_apis(cfg: dict) -> list:
     """Return one FordAPI per token file found.
-    Prefers tokens_{VIN}.json files; falls back to tokens.json for legacy setups.
+    Looks in FORDLOGGER_TOKEN_DIR (default: current dir) for tokens_{VIN}.json files.
+    Falls back to tokens.json for legacy single-vehicle setups.
     """
-    vin_files = sorted(Path(".").glob("tokens_*.json"))
+    import os
+    token_dir = Path(os.environ.get("FORDLOGGER_TOKEN_DIR", "."))
+    vin_files = sorted(token_dir.glob("tokens_*.json"))
     if vin_files:
         apis = []
         for tf in vin_files:
