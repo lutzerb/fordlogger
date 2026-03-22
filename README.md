@@ -14,7 +14,28 @@ FordLogger uses Ford's **official FordConnect Query API**, provided under the [E
 
 ## Tested vehicles
 
-Currently tested with the **Ford Puma Gen-E (2025)** and **Ford Explorer (2024)**. It should work with other FordConnect-enabled vehicles, including ICE (petrol/diesel) models — the telemetry endpoints are the same. However, some dashboards (Charging, Consumption, Battery Degradation) are designed for EVs and would need adaptation for ICE vehicles.
+| Vehicle | Full data | Notes |
+|---|---|---|
+| **Ford Puma Gen-E (2025)** | ✅ | All dashboards work fully |
+| **Ford Explorer (2024)** | ⚠️ | Limited API data — see below |
+| **Ford Capri (2024)** | ⚠️ | Expected to be similar to Explorer |
+
+It should also work with other FordConnect-enabled vehicles, including ICE (petrol/diesel) models — the telemetry endpoints are the same, though ICE dashboards (Charging, Consumption, Battery Degradation) would need adaptation.
+
+### Ford Explorer / Ford Capri — limited telemetry
+
+The Ford Explorer returns significantly fewer metrics from the FordConnect API than the Puma Gen-E. The Ford Capri is expected to behave the same way as it shares the same underlying platform.
+
+**What works:** GPS tracking, state of charge, range, plug/charge status, odometer, door/lock/window status.
+
+**What is missing from the API response:** speed, outside temperature, battery temperature, battery energy/capacity (needed for kWh/100km consumption), charge current/voltage, tire pressure, heading. As a result the following dashboards will show little or no data on Explorer/Capri:
+
+- **Consumption** — no energy data to calculate kWh/100km
+- **Battery Degradation** — no battery capacity metric
+- **Timeline** — no speed data
+- **Trips** — distance works (odometer-based), but no consumption, speed or temperature
+
+If you have a Ford Explorer or Capri and notice more fields appearing in your raw data, please open an issue — it may depend on firmware version or market region.
 
 **If you have a different Ford model, I'd love to hear from you!** Especially if you can test with ICE vehicles — see [Contributing](#contributing).
 
