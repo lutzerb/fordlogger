@@ -18,6 +18,10 @@ def cfg():
 
 @pytest.fixture(scope="session")
 def conn(cfg):
+    assert cfg["db_name"] == TEST_DB_NAME, (
+        f"Safety check failed: tests must use '{TEST_DB_NAME}', got '{cfg['db_name']}'"
+    )
+
     # Connect to default DB to create the test database
     admin_conn = psycopg2.connect(
         host=cfg["db_host"],
@@ -35,6 +39,15 @@ def conn(cfg):
 
     # Connect to the test database
     c = db.connect(cfg)
+
+    # Verify we are actually connected to the test DB
+    with c.cursor() as cur:
+        cur.execute("SELECT current_database()")
+        actual_db = cur.fetchone()[0]
+    assert actual_db == TEST_DB_NAME, (
+        f"Safety check failed: connected to '{actual_db}', expected '{TEST_DB_NAME}'"
+    )
+
     db.ensure_schema(c)
     return c
 
