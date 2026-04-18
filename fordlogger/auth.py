@@ -2,6 +2,7 @@ import json
 import time
 import logging
 import threading
+import os
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, urlencode
 from pathlib import Path
@@ -116,7 +117,10 @@ def do_auth_flow(cfg: dict):
             None,
         )
         if vin:
-            token_path = Path(f"tokens_{vin}.json")
+            # Save VIN-specific tokens in the configured token directory.
+            token_dir = Path(os.environ.get("FORDLOGGER_TOKEN_DIR", "."))
+            token_dir.mkdir(parents=True, exist_ok=True)
+            token_path = token_dir / f"tokens_{vin}.json"
             token_path.write_text(json.dumps(tokens, indent=2))
             log.info("Tokens saved to %s", token_path)
             return
