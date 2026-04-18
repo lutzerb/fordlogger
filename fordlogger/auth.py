@@ -2,6 +2,7 @@ import json
 import time
 import logging
 import threading
+import queue
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, urlencode
 from pathlib import Path
@@ -63,29 +64,47 @@ def do_auth_flow(cfg: dict):
     _CallbackHandler.auth_code = None
     server = HTTPServer(("localhost", 8080), _CallbackHandler)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    log.info("Waiting for OAuth callback (max. 120s) ...")
-    print("If the automatic callback does not work, copy the full URL from your")
-    print("browser's address bar after login and paste it below.\n")
+    # Let stdin fallback run in parallel so remote users can paste the callback URL immediately.
+    manual_q = queue.Queue()
 
-    for _ in range(240):
+    def _read_manual():
+        print("Paste the full callback URL at any time and press Enter.")
+        print("Or just wait for the automatic callback.\n")
+        try:
+            value = input("> ").strip()
+            if value:
+                manual_q.put(value)
+        except EOFError:
+            pass
+
+    threading.Thread(target=_read_manual, daemon=True).start()
+
+    log.info("Waiting for OAuth callback or manual URL (max. 120s) ...")
+    code = None
+    deadline = time.time() + 120
+    while time.time() < deadline:
         if _CallbackHandler.auth_code:
+            code = _CallbackHandler.auth_code
+            log.info("Auth code received via callback: %s...", code[:10])
             break
-        time.sleep(0.5)
+        try:
+            url = manual_q.get_nowait()
+        except queue.Empty:
+            url = None
+        if url:
+            params = parse_qs(urlparse(url).query)
+            if "code" not in params:
+                server.shutdown()
+                raise ValueError("No 'code' parameter found in the pasted URL")
+            code = params["code"][0]
+            log.info("Auth code received via manual URL: %s...", code[:10])
+            break
+        time.sleep(0.2)
 
     server.shutdown()
 
-    if _CallbackHandler.auth_code:
-        code = _CallbackHandler.auth_code
-        log.info("Auth code received via callback: %s...", code[:10])
-    else:
-        print("\nNo automatic callback received.")
-        print("Paste the full callback URL from your browser and press Enter:")
-        url = input("> ").strip()
-        params = parse_qs(urlparse(url).query)
-        if "code" not in params:
-            raise ValueError("No 'code' parameter found in the pasted URL")
-        code = params["code"][0]
-        log.info("Auth code received via manual URL: %s...", code[:10])
+    if not code:
+        raise RuntimeError("No OAuth callback received and no manual URL pasted within 120s")
 
     scope = f"{cfg['client_id']} offline_access openid"
     resp = requests.post(cfg["token_url"], data={
